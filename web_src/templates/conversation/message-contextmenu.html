@@ -1,0 +1,8 @@
+<ul class="rong-menu" :style="{left: context.style.left, top: context.style.top}" @contextmenu.prevent="close">
+    <li class="rong-menu-link" v-if="showSave"><a @click="close" :href="imageURL" download target="_blank">{{locale.btns.save}}</a></li>
+    <li class="rong-menu-link" v-if="showDownload"><a @click="close" :href="fileURL" :download="filename" target="_blank">{{locale.btns.download}}</a></li>
+    <li v-if="showRecall" @click="recall">{{locale.btns.recall}}</li>
+    <li v-if="showCopy" @click="copy">{{locale.btns.copy}}</li>
+    <li v-if="showForward" @click="forward">{{locale.btns.forward}}</li>
+    <li @click="remove">{{locale.btns.remove}}</li>
+</ul>

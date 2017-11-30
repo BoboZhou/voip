@@ -1,0 +1,128 @@
+<div class="rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-group-dialog rong-forward">
+        <transition name="rong-dialog-tip">
+            <div v-if="tip" class="rong-dialog-tip">{{tip}}</div>
+        </transition>
+
+        <a href="" class="rong-dialog-close" :title="locale.btns.close" @click.prevent="close"></a>
+        
+        <div class="rong-clearfix">
+            <div class="rong-group-userlist" :class="['rong-forward-selected-' + currentView]">
+                <div class="rong-group-search-field">
+                    <input type="text" maxlength="20" v-model.trim="keyword" @keyup.esc="clear" class="rong-field rong-field-search" :placeholder="locale.btns.search">
+                    <i class="rong-search-icon"></i>
+                    <button v-if="keyword" class="rong-group-search-clear" type="button" :title="locale.btns.clear" @click="clear"></button>
+                </div>
+                
+                <div v-if="isEmpty" class="rong-search-empty" v-html="localeFormat(locale.tips.searchEmpty, '<em>' + keyword + '</em>')"></div>
+
+                <div v-if="showContacts" class="rong-search-members rong-search-contacts">
+                    <div class="rong-search-members-hd">
+                        <template v-if="members.length + depts.length > 3">
+                            <a v-if="currentView === 'contacts'" href="#collapse" @click.prevent="currentView = ''">{{locale.btns.collapse}}</a>
+                            <a v-else href="#more" @click.prevent="currentView = 'contacts'">{{locale.btns.more}}</a>
+                        </template>
+                        <h2>{{locale.contact.contact}}</h2>
+                    </div>
+                    <div ref="contacts" class="rong-group-userlist-bd">
+                        <div class="rong-crumb" v-if="!keyword">
+                            <template v-if="deptName">
+                                <a href="#dept" @click.prevent="deptId = '' ">{{companyName}}</a> /
+                                <template v-for="dept in breadcrumb">
+                                    <a href="#dept" @click.prevent="deptId = dept.id">{{dept.deptName}}</a> /
+                                </template>
+                                <em>{{deptName}}</em>
+                            </template>
+                            <em v-else>{{companyName}}</em>
+                        </div>
+
+                        <ul>
+                            <li v-for="item in members" v-if="!isMyself(item)">
+                                <label class="rong-checkbox"><input :id="item.id" type="checkbox" v-model="selected" :value="item"><i></i></label>
+                                <div class="rong-profile">
+                                    <label :for="item.id" class="rong-profile-aside rong-avatar-small">
+                                        <component is="avatar" :user="item"></component>
+                                    </label>
+                                    <div class="rong-profile-main">
+                                        <label :for="item.id" v-html="getHighlightUsername(item)"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li v-for="dept in depts">
+                                <label class="rong-checkbox"><input :id="dept.id" type="checkbox" v-model="checkedDepts" :value="dept.id" :indeterminate="getDeptStatus(dept)"><i></i></label>
+                                <div class="rong-profile">
+                                    <label :for="dept.id" class="rong-avatar rong-profile-aside rong-dept-icon"></label>
+                                    <div class="rong-profile-main">
+                                        <div class="rong-profile-name">
+                                            <label :for="dept.id">{{dept.deptName}}</label>
+                                        </div>
+                                        <div class="rong-profile-count">
+                                            <label :for="dept.id">{{dept.memberCount}}{{locale.contact.person}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="rong-group-children" href="#dept" @click.prevent="deptId = dept.id">{{locale.contact.expandDept}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div v-if="showGroups" class="rong-search-members rong-search-groups">
+                    <div class="rong-search-members-hd">
+                        <template v-if="groups.length > 3">
+                            <a v-if="currentView === 'groups'" href="#collapse" @click.prevent="currentView = ''">{{locale.btns.collapse}}</a>
+                            <a v-else href="#more" @click.prevent="currentView = 'groups'">{{locale.btns.more}}</a>
+                        </template>
+                        <h2>{{locale.contact.group}}</h2>
+                    </div>
+                    <ul ref="groups" class="rong-group-userlist-bd">
+                        <li v-for="group in groups">
+                            <label class="rong-checkbox"><input :id="group.id" type="checkbox" v-model="selected" :value="group"><i></i></label>
+                            <div class="rong-profile">
+                                <label :for="group.id" class="rong-profile-aside rong-avatar-small">
+                                    <component is="avatar" :group="group"></component>
+                                </label>
+                                <div class="rong-profile-main">
+                                    <div class="rong-profile-name">
+                                        <label :for="group.id" v-html="getHighlightGroupName(group)"></label>
+                                        <span v-if="showGroupType(group)" class="rong-tag">{{getGroupType(group.type)}}</span>
+                                    </div>
+                                    <div v-if="getMatchedMembers(group)" class="rong-search-summary">
+                                        <label :for="group.id" v-html="locale.tips.contain + getMatchedMembers(group)"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rong-group-selected">
+                <h3 v-if="selected.length > 0" class="rong-group-selected-hd">{{localeFormat(locale.contact.selectedMember, selected.length)}}</h3>
+                <h3 v-else class="rong-group-selected-hd">{{locale.contact.emptyMember}}</h3>
+                
+                <div class="rong-group-selected-bd" v-autoScroll>
+                    <ul>
+                        <li class="rong-profile" v-for="item in selected">
+                            <component v-if="isGroup(item)" is="avatar" :group="item" class="rong-profile-aside rong-avatar-small"></component>
+                            <component v-else is="avatar" :user="item" class="rong-profile-aside rong-avatar-small"></component>
+                            <div class="rong-profile-main">
+                                <template v-if="isGroup(item)">
+                                    {{getGroupName(item)}}
+                                    <span v-if="showGroupType(item)" class="rong-tag">{{getGroupType(item.type)}}</span>
+                                </template>
+                                <template v-else>{{getUsername(item)}}</template>
+                            </div>
+                            <a href="#remove" class="rong-item-remove" :title="locale.btns.remove" @click.prevent="remove(item)"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="rong-group-buttons">
+            <button class="rong-button" type="button" @click.prevent="close">{{locale.btns.cancel}}</button>
+            <button class="rong-button rong-submit" type="button" :disabled="selected.length < 1" @click="submit()">{{locale.btns.send}}</button>
+        </div>
+    </div>
+</div>

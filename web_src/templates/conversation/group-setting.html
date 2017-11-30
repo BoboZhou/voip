@@ -1,0 +1,75 @@
+<div class="rong-conversation-setting rong-group-setting" :class="{'rong-group-has-quit': showQuit}" @click.stop="">
+    <div class="rong-conversation-setting-hd">
+        <h2 class="rong-conversation-setting-title">{{locale.title}}</h2>
+    </div>
+    <div class="rong-conversation-setting-bd" v-if="group">
+        <div class="rong-conversation-setting-scroll">
+            <ul class="rong-group-info">
+                <li>
+                    <label>{{locale.groupName}}</label>
+                    <input v-if="nameEditable" type="text" class="rong-field" v-model.trim="groupNameField" maxlength="16" v-focus @keyup.enter="saveName" @keyup.esc="removeEditable" @blur="saveName">
+                    <template v-else>
+                        <em>{{getGroupName()}}</em>
+                        <a href="" class="rong-group-edit" :title="locale.btns.edit" @click.prevent="setEditable" v-show="showEdit"></a>
+                    </template>
+                </li>
+                <li>
+                    <label>{{locale.admin}}</label>
+                    <a class="rong-group-username" href="" v-if="group" @click.prevent="userProfile(group.adminId)">{{group.creatorName}}</a>
+                </li>
+            </ul>
+
+            <ul class="rong-conversation-switch">
+                <li class="rong-clearfix">
+                    <label class="rong-item-label">{{locale.mute}}</label>
+                    <label class="rong-switch"><input type="checkbox" v-model="isMute"><i></i></label>
+                </li>
+                <li class="rong-clearfix">
+                    <label class="rong-item-label">{{locale.top}}</label>
+                    <label class="rong-switch"><input type="checkbox" v-model="isTop"><i></i></label>
+                </li>
+                <li v-if="showSave" class="rong-clearfix">
+                    <label class="rong-item-label">{{locale.saveContact}}</label>
+                    <label class="rong-switch"><input type="checkbox" v-model="isSaved"><i></i></label>
+                </li>
+            </ul>
+
+            <div class="rong-group-hd">
+                <div class="rong-group-title">
+                    <em>{{locale.member}}</em>
+                    <span>({{group.memberCount}})</span>
+                </div>
+                <div class="rong-group-search" :class="{'rong-search-selected': isSearch}">
+                    <button class="rong-group-search-button rong-group-search-hd" @click="setIsSearch"><i></i>{{locale.btns.search}}</button>
+                    <a class="rong-group-search-cancel" href="#cancel" @click.prevent="clearSearch">{{locale.btns.cancel}}</a>
+                    <div class="rong-group-search-bd" @transitionend="searchFocus">
+                        <div class="rong-group-search-field">
+                            <input type="text" class="rong-field" ref="searchName" v-model.trim="searchName" @keyup.esc="clearSearch">
+                            <button class="rong-group-search-clear" type="button" :title="locale.btns.clear" @click="searchName=''"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="filterMembers && filterMembers.length > 0" class="rong-members">
+                <ul class="rong-clearfix">
+                    <li v-if="showAdd">
+                       <a href="" class="rong-conversation-add" :title="locale.btns.add" @click.prevent="addMember"></a> 
+                    </li>
+                    <li v-if="showRemove">
+                       <a href="" class="rong-conversation-remove" :title="locale.btns.remove" @click.prevent="removeMembers"></a> 
+                    </li>
+                    <li v-for="user in filterMembers">
+                        <a href="" @click.prevent="userProfile(user.id)">
+                            <component is="avatar" :user="user" class="rong-avatar-small"></component>
+                            <div class="rong-members-username" :title="getUsername(user)">{{getUsername(user)}}</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div v-else-if="searchName" class="rong-empty" v-html="localeFormat(locale.tips.searchEmpty, '<em>' + searchName + '</em>')"></div>
+            
+            <button v-if="showQuit" class="rong-button rong-group-quit" type="button" @click="delAndQuit">{{locale.btns.removeQuit}}</button>
+        </div>
+    </div>
+</div>

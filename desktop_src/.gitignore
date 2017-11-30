@@ -1,0 +1,8 @@
+node_modules
+build
+dist
+screencapture.node_debug
+screencapture.node_pkg
+.vscode
+npm-debug.log
+latestApp

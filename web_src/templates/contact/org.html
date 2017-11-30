@@ -1,0 +1,38 @@
+<div class="rong-contact-main">
+    <div class="rong-contact-hd rong-dragable">
+        <h2 class="rong-contact-title">{{company.name}}</h2>
+    </div>
+    
+    <div class="rong-contact-content">    
+        <div class="rong-crumb">
+            <em v-if="isCompany">{{company.name}}</em>
+            <template v-else>
+                <router-link to="/contact/org/tree">{{company.name}}</router-link> /
+                <template v-for="item in breadcrumb">
+                    <router-link :to="getRoute(item.id)">{{item.deptName}}</router-link> /
+                </template>
+                <em>{{deptName}}</em>
+            </template>
+        </div>
+
+        <ul class="rong-contact-list">
+            <li class="rong-profile" v-for="item in members">
+                <component is="avatar" class="rong-profile-aside rong-avatar-middle" @clickavatar="userProfile(item.id)" :user="item"></component>
+                <div class="rong-profile-main">
+                    <a class="rong-profile-name" @click.prevent="userProfile(item.id)" href="#user">{{getUsername(item)}}</a>
+                </div>
+            </li>
+            <li class="rong-profile" v-for="item in depts">
+                <router-link class="rong-avatar rong-profile-aside rong-dept-icon" :to="getRoute(item.id)"></router-link>
+
+                <div class="rong-profile-main">
+                    <div class="rong-profile-name">
+                        <router-link :to="getRoute(item.id)">{{item.deptName}}</router-link>
+                        <span v-if="item.type" class="rong-tag">{{getTypeName(item.type)}}</span>
+                    </div>
+                    <div class="rong-profile-count">{{item.memberCount}}{{locale.contact.person}}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

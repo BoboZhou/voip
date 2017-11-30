@@ -1,0 +1,65 @@
+<div class="rong-component">    
+    <component is="search" ref="searchBox"></component>
+
+    <div class="rong-list-main">
+        <div ref="conversation-list" id="conversationListContent" class="rong-list-content rong-conversation-list" :style="{overflow: overflow}" @wheel="smoothScroll">
+            <div v-if="busy && conversationList.length < 1" class="rong-loading"><span>{{locale.tips.loading}}</span></div>
+            
+            <div v-else-if="conversationList.length > 0" v-for="item in conversationList"
+                @click="showConversaton(item)"
+                @contextmenu.prevent="showContextmenu($event, {conversation: item})"
+                :class="{'rong-selected': isEqual(item, conversation), 'rong-conversation-top': item.isTop, 'rong-conversation-mute': item.notificationStatus}"
+                class="rong-conversation-item rong-clearfix" :id="getId(item)">
+                <div class="rong-conversation-aside">
+                    <component is="avatar" v-if="item.user" :user="item.user" class="rong-avatar-middle"></component>
+                    <component is="avatar" v-else-if="item.group" :group="item.group" class="rong-avatar-middle"></component>
+                    <span v-if="item.unreadMessageCount > 0" class="rong-message-count">
+                        <em :class="{'rong-message-more': item.unreadMessageCount > 99}">{{getUnreadMessageCount(item)}}</em>
+                    </span>
+                </div>
+                <div class="rong-item-main">
+                    <div v-if="item.latestMessage" class="rong-conversation-time">{{dateFormat(item.latestMessage.sentTime)}}</div>
+                    <div class="rong-conversation-name" :class="{'rong-conversation-grouptype': showGroupType(item.group)}">
+                        <em v-if="isGroup(item)">{{getGroupName(item.group)}}</em>
+                        <em v-else-if="isPrivate(item)">{{getUsername(item.user)}}</em>
+                        <span v-if="showGroupType(item.group)" class="rong-tag">{{getGroupType(item.group.type)}}</span>
+                    </div>
+                    <span class="rong-conversation-mute-icon" :title="locale.conversation.mute"></span>
+                    <div v-if="item.latestMessage" class="rong-conversation-message"
+                        :class="[
+                            'rong-list-' + getMessageType(item.latestMessage),
+                            'rong-list-' + (getSentStatus(item.latestMessage) || getRecievedStatus(item.latestMessage))
+                        ]">
+                        <div class="rong-conversation-message-bd" :class="[isRichText(item.latestMessage) ? 'rong-richtext' : 'rong-simpletext']">
+                            <span v-if="!isEqual(item, conversation) && item.draft" class="rong-draft">
+                                <label>[{{locale.conversation.draft}}]</label>
+                                <em v-html="convertMessage(item.draft)"></em>
+                            </span>
+                            <i v-else-if="isFailed(item.latestMessage) && !isCanceled(item.latestMessage)" class="rong-conversation-fail" :title="locale.conversation.messageSentFail"></i>
+                            <template v-else>
+                                <span v-if="showSentStatus(item.latestMessage) && !isFailed(item.latestMessage)" class="rong-sentstatus">
+                                    <template v-if="isOtherRead(item.latestMessage)">[{{locale.message.read}}]</template>
+                                    <template v-else>[{{locale.message.unread}}]</template>
+                                </span>
+                                <span v-if="mentionMsgHasSelf(item)" class="rong-conversation-at">[{{locale.conversation.atme}}]</span>
+                                <span v-if="showName(item)" class="rong-conversation-username">{{getUsername(item.latestMessage.user)}}:</span>
+                                <component is="latest-message" :message="item.latestMessage"></component>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div v-else class="rong-empty">{{locale.conversation.empty}}</div>
+        </div>
+    </div>
+    
+    <component is="contextmenu" v-if="context"
+        @close="closeContextmenu"
+        @top="top"
+        @untop="untop"
+        @mute="mute"
+        @unmute="unmute"
+        @remove="remove"
+        :context="context"></component>
+</div>

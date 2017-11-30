@@ -1,0 +1,7 @@
+<div class="rong-dialog" v-show="tip">
+    <div class="rong-dialog-inner rong-messagebox">
+        <a @click.prevent="closeBefore = false" href="#close" :title="locale.btns.close" class="rong-dialog-close">×</a>
+        <div class="rong-dialog-hd"><h2 class="rong-dialog-title">{{locale.tips.messageBoxTitle}}</h2></div>
+        <div class="rong-messagebox-bd">{{tip}}</div>
+    </div>
+</div>

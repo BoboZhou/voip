@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+Thumbs.db
+*.log
+js/data.js
+Gruntfile.js
+.swp
+index2.html
+.project
+css/*.map
+config.codekit

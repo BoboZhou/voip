@@ -1,0 +1,122 @@
+<div class="rong-search rong-dragable">
+    <div class="rong-search-hd">
+        <div class="rong-search-add">
+            <button class="rong-button" type="button" @click.stop="showMenu()">+</button>
+            <div class="rong-search-dropdown" v-show="isShowMenu">
+                <a href="" @click.prevent="createGroup()">{{locale.btns.groupChat}}</a>
+                <a href="" @click.prevent="addFriend()">{{locale.btns.addFriend}}</a>
+                <a href="" @click.prevent="addPin()">{{locale.btns.newPin}}</a>
+            </div>
+        </div>
+        <div class="rong-search-main">
+            <input type="text" v-model="keyword" @keyup.esc="clear" @keyup.up="up" @keyup.down="down" @keyup.enter="enter" class="rong-field rong-field-search" :placeholder="locale.btns.search" ref="searchBox">
+            <i class="rong-search-icon"></i>
+            <button v-if="keyword" class="rong-search-clear" type="button" title="locale.btns.clear" @click="clear"></button>
+        </div>
+    </div>
+    
+    <transition name="rong-search">  
+        <div v-if="keyword" class="rong-search-result rong-search-contacts">
+            <div class="rong-search-content" :class="['rong-search-selected-' + currentView]">
+               <!--  <div v-if="isEmpty" class="rong-search-empty">没有搜索到<em>"{{keyword}}"</em>相关结果</div> -->
+                <div v-if="isBusy && isEmpty" class="rong-search-empty">{{locale.tips.searching}}</div>
+                <div v-else-if="isEmpty" class="rong-search-empty" v-html="localeFormat(locale.tips.searchEmpty, '<em>' + keyword + '</em>')"></div>
+
+                <div v-if="showContacts" class="rong-search-members">
+                    <div class="rong-search-members-hd">
+                        <template v-if="contacts.length > 3">
+                            <a v-if="currentView === 'contacts'" href="#collapse" @click.prevent="currentView = ''">{{locale.btns.collapse}}</a>
+                            <a v-else href="#more" @click.prevent="currentView = 'contacts'">{{locale.btns.more}}</a>
+                        </template>
+                        <h2>{{locale.contact.contact}}</h2>
+                    </div>
+                    <ul class="rong-group-userlist-bd" v-scrollTop>
+                        <li v-for="item in contacts" :class="{'rong-selected': isEqual(item, 1)}">
+                            <div class="rong-profile rong-clickable" @click="showConversation(1, item.id)">
+                                <component is="avatar" class="rong-profile-aside" :user="item"></component>
+                                <div class="rong-profile-main" v-html="getHighlightUsername(item)"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="showGroups" class="rong-search-members rong-search-groups">
+                    <div class="rong-search-members-hd">
+                        <template v-if="groups.length > 3">
+                            <a v-if="currentView === 'groups'" href="#collapse" @click.prevent="currentView = ''">{{locale.btns.collapse}}</a>
+                            <a v-else href="#more" @click.prevent="currentView = 'groups'">{{locale.btns.more}}</a>
+                        </template>
+                        <h2>{{locale.contact.group}}</h2>
+                    </div>
+                    <ul class="rong-group-userlist-bd" v-scrollTop>
+                        <li v-for="group in groups" :class="{'rong-selected': isEqual(group, 2)}">
+                            <div class="rong-profile rong-clickable" @click="showConversation(3, group.id)">
+                                <component is="avatar" class="rong-profile-aside" :group="group"></component>
+                                <div class="rong-profile-main">
+                                    <div class="rong-search-name">
+                                        <span v-html="getHighlightGroupName(group)"></span>
+                                        ({{group.memberCount}})
+                                    </div>
+                                    <div v-if="getMatchedMembers(group)" class="rong-search-summary" v-html="locale.tips.contain + getMatchedMembers(group)"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div v-if="showHistory" class="rong-search-members rong-search-history">
+                    <div class="rong-search-members-hd">
+                        <template v-if="history.length > 3">
+                            <a v-if="currentView === 'history'" href="#collapse" @click.prevent="currentView = ''">{{locale.btns.collapse}}</a>
+                            <a v-else href="#more" @click.prevent="currentView = 'history'">{{locale.btns.more}}</a>
+                        </template>
+                        <h2>{{locale.chatHistory}}</h2>
+                    </div>
+                    <ul class="rong-group-userlist-bd" v-scrollTop>
+                        <li v-for="item in history" :class="{'rong-selected': isEqual(item, 3)}">
+                            <div class="rong-profile">
+                                <component is="avatar" class="rong-profile-aside" v-if="item.group" :group="item.group"></component>
+                                <component is="avatar" class="rong-profile-aside" v-if="item.user" :user="item.user"></component>
+                                <div class="rong-profile-main">
+                                    <a href="#history-detail" @click.prevent="showDeatil(item)">
+                                        <div class="rong-search-name">
+                                            <template v-if="item.user">{{getUsername(item.user)}}</template>
+                                            <template v-else>{{getGroupName(item.group)}}</template>
+                                        </div>
+                                        <div v-if="item.search.count == 1" >
+                                            <div class="rong-search-summary" v-html="getSearchStr(item.search.list[0])"></div>
+                                        </div>
+                                        <div class="rong-search-summary" v-else>
+                                        {{localeFormat(locale.resultHistory, item.search.count)}}</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div v-if="showHistoryDetail" class="rong-search-history-detail">
+                    <div class="rong-search-members-hd">
+                        <a href="#back" @click.prevent="showHistoryDetail = false">{{locale.btns.back}}</a>
+                       <!--  <h2>{{searchHistoryDetail.count}}条与 <em>{{keyword}}</em> 相关聊天记录</h2> -->
+                       <h2 v-html="localeFormat(locale.resultHistoryDetail, searchHistoryDetail.count, '<em>' + keyword + '</em>')"></h2>
+                    </div>
+                    <div class="rong-search-history-inner">
+                        <ul class="rong-group-userlist-bd" v-scrollTop>
+                            <li v-for="item in searchHistoryDetail.list">
+                                <a class="rong-profile" href="#more" @click.prevent="gotoMessage(item)">
+                                    <component is="avatar" class="rong-profile-aside" :user="item.user"></component>
+                                    <div class="rong-profile-main">
+                                        <template>{{getUsername(item.user)}}</template>
+                                        <!-- <template v-else>{{getGroupName(searchHistoryDetail.group)}}</template> -->
+                                        <div class="rong-search-summary" v-html="getSearchStr(item)"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</div>

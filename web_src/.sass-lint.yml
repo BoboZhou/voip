@@ -1,0 +1,44 @@
+files:
+  include:
+    - '**/*.css'
+    - '**/*.scss'
+  ignore:
+    - 'node_modules/**/*'
+options:
+  merge-default-rules: false
+rules:
+  class-name-format:
+    - 1
+  function-name-format:
+    - 1
+  indentation:
+    - 2
+    - size: 4
+  mixin-name-format:
+    - 1
+  nesting-depth:
+    - 1
+  no-duplicate-properties:
+    - 1
+  no-empty-rulesets: 1
+  no-ids: 2
+  no-invalid-hex: 2
+  no-misspelled-properties: 1
+  no-important: 2
+  no-universal-selectors: 1
+  placeholder-name-format:
+    - 1
+  space-after-comma:
+    - 1
+  space-around-operator:
+    - 1
+  space-before-bang:
+    - 1
+  space-before-colon:
+    - 1
+  trailing-semicolon:
+    - 2
+  variable-name-format:
+    - 1
+  zero-unit:
+    - 1

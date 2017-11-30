@@ -1,0 +1,36 @@
+<div v-if="show" class="rong-dialog rong-theme-light">
+    <div class="rong-dialog-inner rong-dialog-friend">
+        <a @click.prevent="close" href="#close" class="rong-dialog-close" :title="locale.btns.close"></a>
+        <div class="rong-dialog-hd">
+            <h2 class="rong-dialog-title">{{locale.title}}</h2>
+        </div>
+        
+        <div class="rong-dialog-friend-bd">
+            <input type="text" class="rong-field rong-friend-search" 
+            :placeholder="localeFormat(locale.searchTip,locale.product.productName)" maxlength="30" name="mobile" 
+            v-model="mobile" data-rule-required="true" 
+            :data-message-required="locale.mobileEmptyTip"
+            data-rule-mobile="true" :data-message-mobile="locale.mobileErrTip" @keydown="keydown">
+            <div v-if="errors.mobile" class="rong-friend-tip">{{errors.mobile}}</div>
+            <template v-if="user">
+                <div class="rong-profile">
+                    <label class="rong-profile-aside rong-avatar-small">
+                        <component is="avatar" :user="user" @clickavatar="userProfile(user.id || user.uid)"></component>
+                    </label>
+                    <div class="rong-profile-main">
+                        <label>{{userName}}</label>
+                    </div>
+                </div>
+                <div class="rong-dialog-friend-ft">
+                    <button class="rong-button rong-submit" @click.prevent="addFriend">{{locale.btns.addFriend}}</button>
+                </div>
+            </template>
+            <template v-else>
+                <div class="rong-friend-tip" v-if="searchDone">{{locale.searchEmpty}}</div>
+                <div class="rong-dialog-friend-ft">
+                    <button class="rong-button rong-submit" @click.prevent="search">{{locale.btns.confirm}}</button>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="rong-contact-main">
+    <div class="rong-contact-hd rong-dragable">
+        <h2 class="rong-contact-title">{{locale.title}}</h2>
+    </div>
+    <div class="rong-contact-content">    
+        <ul class="rong-contact-list rong-friend-list">
+            <li class="rong-profile" v-for="item in list">
+                <component is="avatar" class="rong-profile-aside rong-avatar-middle" @clickavatar="userProfile(item.id || item.uid)" :user="item.user"></component>
+                <div class="rong-profile-main">
+                    <button v-show="showAccept(item)" class="rong-button rong-submit rong-friend-add" type="button" @click.prevent="acceptFriend(item)">{{locale.accept}}</button>
+                    <button v-show="showRequest(item)" class="rong-button rong-friend-add" disabled>{{locale.sent}}</button>
+                    <button v-show="showOverDate(item)" class="rong-button rong-friend-add" disabled>{{locale.expired}}</button>
+                    <button v-show="showAdded(item)" class="rong-button rong-friend-add" disabled>{{locale.added}}</button>
+                    <a class="rong-profile-name" @click.prevent="userProfile(item.id || item.uid)" href="#user">{{getUsername(item)}}</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,420 @@
+.rong-icon, .rong-contact-item-hd a:before,
+.rong-contact-item-hd em:before,
+.rong-contact-toggle:before, .rong-contact-logo, .rong-user-alias-edit, .rong-user-favorite {
+  background-image: url(images/icon.svg);
+  background-repeat: no-repeat;
+  background-size: 150px auto;
+  background-color: transparent;
+}
+
+.rong-contact {
+  margin-top: 5px;
+  padding: 0 10px;
+  line-height: 20px;
+}
+.rong-contact > li + li {
+  margin-top: 25px;
+}
+.rong-contact a, .rong-contact em {
+  display: block;
+  padding-left: 28px;
+}
+.rong-contact em {
+  display: block;
+  margin-right: 20px;
+  height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rong-contact a:hover {
+  color: #008af3;
+}
+
+.rong-contact-item-hd {
+  position: relative;
+}
+.rong-contact-item-hd .rong-selected,
+.rong-contact-item-hd a:hover {
+  color: #008af3;
+}
+
+.rong-contact-item-hd a:before,
+.rong-contact-item-hd em:before,
+.rong-contact-toggle:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin-top: -10px;
+  width: 20px;
+  height: 20px;
+  background-position: 0 -9999px;
+}
+
+.rong-contact-child {
+  display: none;
+  position: relative;
+  padding-top: 12px;
+}
+.rong-contact-child:before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 0;
+  height: 100%;
+  border-left: 1px solid #e3e3e3;
+}
+.rong-contact-child li + li {
+  margin-top: 10px;
+}
+.rong-contact-child a {
+  position: relative;
+}
+.rong-contact-child a:before {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  left: 7px;
+  top: 50%;
+  margin-top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background: #e3e3e3;
+}
+.rong-contact-child .rong-selected {
+  cursor: default;
+  color: #008af3;
+}
+.rong-contact-child .rong-selected:before {
+  background-color: #008af3;
+}
+
+.rong-contact-logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background-position: -8px -1635px;
+}
+
+.rong-contact-star a:before {
+  background-position: -10px -623px;
+}
+.rong-contact-star:hover a:before {
+  background-position: -39px -623px;
+}
+
+.rong-contact-request em:before,
+.rong-contact-request a:before,
+.rong-contact-friends em:before,
+.rong-contact-friends a:before {
+  background-image: url(images/friend.svg);
+}
+
+.rong-contact-new:before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+  background: #f45349;
+}
+
+.rong-contact-request a:before {
+  background-position: -6px -9px;
+}
+.rong-contact-request:hover a:before {
+  background-position: -31px -9px;
+}
+
+.rong-contact-friends a:before {
+  background-position: -7px -30px;
+}
+.rong-contact-friends:hover a:before {
+  background-position: -32px -30px;
+}
+
+.rong-contact-group a:before {
+  background-position: -9px -684px;
+}
+.rong-contact-group:hover a:before {
+  background-position: -39px -684px;
+}
+
+.rong-contact-public a:before {
+  background-position: -10px -654px;
+}
+.rong-contact-public:hover a:before {
+  background-position: -39px -654px;
+}
+
+.rong-contact-star .rong-selected:before {
+  background-position: -68px -623px;
+}
+
+.rong-contact-request .rong-selected:before {
+  background-position: -56px -9px;
+}
+
+.rong-contact-friends .rong-selected:before {
+  background-position: -57px -30px;
+}
+
+.rong-contact-group .rong-selected:before {
+  background-position: -68px -684px;
+}
+
+.rong-contact-public .rong-selected:before {
+  background-position: -68px -654px;
+}
+
+.rong-contact-toggle {
+  cursor: pointer;
+}
+.rong-contact-toggle:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -3px;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  border-bottom: 6px solid #969696;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+.rong-contact-toggle:hover {
+  color: #008af3;
+}
+.rong-contact-toggle:hover:after {
+  border-bottom-color: #008af3;
+}
+
+.rong-contact-expand .rong-contact-toggle:after {
+  -webkit-transform: rotate(-180deg);
+      -ms-transform: rotate(-180deg);
+          transform: rotate(-180deg);
+}
+.rong-contact-expand .rong-contact-child {
+  display: block;
+}
+
+.rong-contact-hd {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ececed;
+}
+
+.rong-contact-title {
+  padding-left: 18px;
+  line-height: 55px;
+}
+
+.rong-contact-main {
+  position: relative;
+  height: 100%;
+  padding-top: 66px;
+}
+.rong-contact-main .rong-crumb {
+  margin-bottom: 10px;
+}
+
+.rong-dept-icon {
+  background: url(images/dept.png) no-repeat center center;
+}
+
+.rong-contact-content {
+  height: 100%;
+  overflow: auto;
+}
+
+.rong-contact-list {
+  padding-left: 18px;
+}
+
+.rong-user {
+  width: 395px;
+  padding-bottom: 20px;
+}
+.rong-user .rong-avatar {
+  cursor: default;
+}
+
+.rong-user-range {
+  display: table-cell;
+  height: 60px;
+  vertical-align: middle;
+}
+
+.rong-user-hd {
+  border-radius: 8px 8px 0 0;
+  padding: 25px;
+  background: #f2f5f8;
+}
+
+.rong-user-avatar {
+  float: left;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rong-user-avatar .rong-avatar-item {
+  font-size: 36px;
+  line-height: 60px;
+}
+.rong-user-avatar a {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+}
+
+.rong-user-name {
+  margin: 5px 0;
+}
+
+.rong-user-name-main {
+  float: left;
+}
+
+.rong-user-alias {
+  overflow: hidden;
+}
+.rong-user-alias label {
+  float: left;
+  margin-right: 5px;
+  line-height: 30px;
+}
+.rong-user-alias input {
+  width: 140px;
+}
+
+.rong-user-name label {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rong-user-alias-edit {
+  position: relative;
+  top: 2px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-position: -8px -440px;
+}
+.rong-user-alias-edit:hover {
+  background-position: -50px -440px;
+}
+
+.rong-user-add,
+.rong-user-remove {
+  float: right;
+  margin-top: 17px;
+  padding: 0 15px;
+}
+
+.rong-user-remove {
+  color: #f45349;
+}
+
+.rong-user-favorite {
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  border: 0;
+  width: 18px;
+  height: 18px;
+  background-position: -15px -725px;
+  vertical-align: middle;
+}
+
+.rong-user-favorite-selected {
+  background-position: -60px -725px;
+}
+
+.rong-user-request p {
+  padding: 20px 20px 20px 35px;
+  border-bottom: 1px solid #e3e3e3;
+}
+.rong-user-request .rong-user-primary {
+  margin-top: 70px;
+}
+
+.rong-user-title {
+  margin: 15px 0 15px 35px;
+  position: relative;
+}
+.rong-user-title:before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  margin-top: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 100px;
+  background: #7f96a3;
+}
+
+.rong-user-detail {
+  padding-left: 35px;
+  min-height: 40px;
+}
+.rong-user-detail li + li {
+  margin-top: 10px;
+}
+.rong-user-detail label {
+  display: inline-block;
+  width: 55px;
+  color: #7f96a3;
+}
+
+.rong-user-primary {
+  display: block;
+  width: 160px;
+  height: 40px;
+  margin: 40px auto 0 auto;
+  color: #008af3;
+}
+
+.rong-friend-list .rong-profile-main {
+  position: relative;
+}
+
+.rong-friend-add {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 78px;
+  height: 32px;
+}
+.rong-friend-list .rong-friend-add[disabled], .rong-friend-list .rong-friend-add[disabled]:hover {
+  border-color: transparent;
+  background-color: transparent;
+}

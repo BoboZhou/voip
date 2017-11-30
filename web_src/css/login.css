@@ -1,0 +1,238 @@
+.rong-icon, .rong-reset-success-bd span {
+  background-image: url(images/icon.svg);
+  background-repeat: no-repeat;
+  background-size: 150px auto;
+  background-color: transparent;
+}
+
+.rong-entry {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0085e1;
+}
+
+.rong-entry-hd {
+  height: 55px;
+}
+
+.rong-unauthed.rong-os-win32 .rong-entry-hd,
+.rong-unauthed.rong-os-win32 .rong-titlebar-logo {
+  display: none;
+}
+
+.rong-entry-bd {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 785px;
+  height: 440px;
+  margin: -220px 0 0 -392px;
+}
+
+.rong-entry-aside {
+  float: left;
+  width: 375px;
+  height: 439px;
+  background: url(images/entry-bg-aside.png) no-repeat;
+  background-size: contain;
+}
+
+.rong-entry-main {
+  float: right;
+  width: 280px;
+  margin-top: 90px;
+  background: #fff;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.rong-entry-main-hd {
+  width: 101%;
+  border-bottom: 1px solid #e1e1e1;
+  height: 47px;
+  line-height: 44px;
+}
+.rong-entry-main-hd h1 {
+  padding-left: 24px;
+  color: #0085e1;
+}
+.rong-entry-main-hd h2, .rong-entry-main-hd a {
+  display: inline-block;
+  width: 33.33333%;
+  text-align: center;
+}
+
+.rong-entry-selected-qrcode .rong-item-qrcode,
+.rong-entry-selected-password .rong-item-password {
+  border-bottom: 3px solid #0085e1;
+  color: #0085e1;
+  cursor: default;
+}
+
+.rong-entry-qrcode {
+  text-align: center;
+}
+.rong-entry-qrcode img {
+  height: 162px;
+  margin: 0 auto;
+  vertical-align: middle;
+}
+
+.rong-entry-qrcode-bd {
+  position: relative;
+  height: 162px;
+  margin: 15px 0;
+}
+
+.rong-entry-logo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rong-entry-logo-bd {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background: #fff no-repeat center center;
+  background-size: 28px;
+  background-image: url(images/logo.png);
+}
+
+.rong-qrcode-invalid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+}
+.rong-qrcode-invalid span {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.rong-entry-qrcode-ft {
+  color: #777;
+}
+.rong-entry-qrcode-ft a {
+  color: #3a91f3;
+}
+
+.rong-entry-refresh {
+  margin-left: 4px;
+  padding-left: 15px;
+  background: url(images/refresh.png) no-repeat left center;
+}
+
+.rong-entry-main-bd a,
+.rong-entry-main-ft a {
+  color: #0085e1;
+}
+
+.rong-entry-main-bd {
+  min-height: 200px;
+  padding: 0 15px;
+}
+.rong-entry-main-bd li {
+  position: relative;
+  margin-top: 20px;
+}
+.rong-entry-main-bd .rong-field {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 5px 10px;
+}
+.rong-entry-main-bd .rong-form-error {
+  top: 37px;
+}
+.rong-entry-main-bd .rong-button {
+  display: block;
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+}
+.rong-entry-main-bd .rong-button, .rong-entry-main-bd .rong-button:hover {
+  border-color: #0085e1;
+  background: #0085e1;
+  color: #fff;
+}
+
+.rong-entry-main-ft {
+  padding: 15px;
+}
+.rong-signup .rong-entry-main-ft {
+  text-align: right;
+}
+
+.rong-login-remeber {
+  float: left;
+}
+
+.rong-login-forget {
+  float: right;
+}
+
+.rong-captcha {
+  float: left;
+  width: 64%;
+  padding-right: 5px;
+}
+
+.rong-captcha-button {
+  float: right;
+  width: 35%;
+}
+
+.rong-reset-success {
+  height: 255px;
+}
+
+.rong-reset-success-bd {
+  padding: 68px 0;
+  line-height: 45px;
+  text-align: center;
+}
+.rong-reset-success-bd span {
+  display: inline-block;
+  padding-left: 53px;
+  background-position: -10px -1088px;
+}
+
+.rong-product {
+  position: relative;
+  top: -8px;
+  left: 5px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.rong-product .rong-product-name {
+  color: #fff;
+  font-size: 48px;
+  font-family: "Arial", "Microsoft Yahei";
+  -webkit-mask-image: -webkit-gradient(linear, 0 0, 0 bottom, from(white), to(rgba(199, 239, 255, 0.7)));
+  content: attr(data-text);
+  position: relative;
+  top: 2px;
+}

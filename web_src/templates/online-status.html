@@ -1,0 +1,11 @@
+<div class="rong-component-root" @click.stop="">
+    <div class="rong-nav-status" :class="['rong-nav-' + status]">
+        <a href="#update-status" @click.prevent="showMenu = true">{{statusText}}</a>
+    </div>
+    
+    <ul v-if="showMenu" class="rong-nav-status-menu" :class="['rong-nav-status-' + status]">
+        <li class="rong-nav-online"><a href="#" @click.prevent="setStatus('online') ">{{locale.online}}</a></li>
+        <li class="rong-nav-leave"><a href="" @click.prevent="setStatus('leave') ">{{locale.leave}}</a></li>
+        <li class="rong-nav-busy"><a href="" @click.prevent="setStatus('busy') ">{{locale.busy}}</a></li>
+    </ul>
+</div>

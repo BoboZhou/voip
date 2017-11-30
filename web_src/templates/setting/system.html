@@ -1,0 +1,43 @@
+<ul class="rong-system">
+    <li>
+        <label class="rong-system-text">{{locale.sysMsgNotify}}</label>
+        <label class="rong-switch">
+            <input type="checkbox" v-model="playSound">
+            <i></i>
+        </label>
+    </li>
+    <li>
+        <label class="rong-system-text">{{locale.language}}</label>
+        <label class="rong-select">
+            <select v-model="language">  
+                <option v-for="option in supportLocales" v-bind:value="option.value">
+                    {{ option.name }}
+                </option>
+            </select>
+        </label>
+    </li>
+    <!--  
+    <li>
+        <label class="rong-system-text">发送消息快捷键</label>
+        <ul class="rong-setting-shortcut">
+            <li>
+                <label>
+                    <input name="shortcut" type="radio" value="0" v-model="shortCut">
+                    <span>Enter 发送 , Ctrl+Enter 换行</span>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input name="shortcut" type="radio" value="1" v-model="shortCut">
+                    <span>Enter 换行 , Ctrl+Enter 发送</span>
+                </label>
+            </li>
+        </ul>
+    </li>
+    -->
+    <li class="rong-system-version">
+        <label class="rong-system-text">{{locale.versionInfo}}</label>
+        <em>{{product.productName}} {{product.version}}</em>
+        <!-- <button class="rong-button" type="button" @click="checkAppUpdate">{{locale.checkUpdate}}</button> -->
+    </li> 
+</ul>

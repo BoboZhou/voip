@@ -1,0 +1,45 @@
+<div class="rong-component">
+    <div class="rong-main-hd rong-dragable">
+        <h2 class="rong-main-title">{{locale.components.sendPin.title}}</h2>
+    </div>
+
+    <div class="rong-pin-list">
+        <ul class="rong-main-content clearfix">
+            <li v-for="(pin, index) in pinList" class="rong-pin-item" :class="['rong-pin-item-' + (index+1) % 4]" @click.prevent="showDetail(pin)" @contextmenu.prevent="showContextmenu($event, {pin: pin});isClicking=true;" >
+                <div class="rong-pin-item-hd">
+                    <component is="avatar" :user="pin.user" @clickavatar="userProfile(pin.creatorUid)" class="rong-avatar-small"></component>
+                    <div class="rong-pin-item-username">
+                        <a @click.prevent="userProfile(pin.creatorUid)" :title="getUsername(pin.user)" href="">{{ getUsername(pin.user) }}</a>
+                    </div>
+                    <div class="rong-pin-item-time-box">
+                        <i v-if="pin.delayed" class="rong-pin-item-delayed"></i>
+                        <span class="rong-pin-item-datetime">{{dateFormat(pin)}}</span><i v-if="pin.attachmentCount" class="rong-pin-attachment">
+                            ({{pin.attachmentCount}})
+                        </i>
+                    </div>
+                </div>
+                <p class="rong-pin-item-bd" :title="pin.content">{{pin.content}}</p>
+                <div class="rong-pin-item-ft">
+                    <span v-if="pin.unConfirmCount" class="rong-pin-item-read">{{getUnConfirmStr(pin)}}</span><span v-else class="rong-pin-item-read">{{locale.components.pinDetail.allConfirmed}}</span>
+                    <a class="rong-pin-reply-count-box" href="" @click="replyPin(pin)">
+                        <em v-if="hasUnReadComment(pin)" class="rong-pin-reply-mark"></em>
+                        {{getReplyStr(pin)}}
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div v-if="selectedPin" class="rong-pin-detail-shadow"></div>
+    <transition name="rong-setting-slide" v-on:after-enter="afterEnter" v-on:enter-cancelled="enterCancelled">
+    
+        <component v-if="selectedPin" is="pinDetail" v-on:receiveComment="selectedPin.unReadCommentCount=0" v-on:hidepanel="selectedPin=null" :isSender=true :pinUid="selectedPin.uid" :isReply="selectedPin.isReply" :user="selectedPin.user"></component>
+
+    </transition>  
+
+    <component is="contextmenu" v-if="context"
+        @close="closeContextmenu();isClicking=false;"
+        :context="context"></component>
+    
+
+</div>

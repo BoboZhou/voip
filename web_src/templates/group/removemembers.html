@@ -1,0 +1,46 @@
+<div class="rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-group-dialog rong-group-remove">
+        <a href="" class="rong-dialog-close" :title="locale.btns.close" @click.prevent="close"></a>
+        
+        <div class="rong-clearfix">
+            <div class="rong-group-userlist">
+                <div class="rong-group-search-field">
+                    <input type="text" :placeholder="locale.btns.search" class="rong-field rong-field-search" v-model="keyword" @keyup.esc="clear">
+                    <i class="rong-search-icon"></i>
+                    <button v-if="keyword" type="button" :title="locale.btns.clear" class="rong-group-search-clear" @click="clear"></button>
+                </div>
+
+                <div v-if="filterList.length > 0" class="rong-group-check">
+                    <label class="rong-checkbox"><input type="checkbox" v-model="checkedAll" :indeterminate="indeterminate"><i></i> <span>{{locale.btns.checkedAll}}</span></label>
+                </div>
+
+                <ul class="rong-group-userlist-bd">
+                    <li v-for="user in filterList">
+                        <label class="rong-checkbox"><input type="checkbox" v-model="selected" :value="user"><i></i></label>
+                        <div class="rong-profile">
+                            <component is="avatar" :user="user" class="rong-profile-aside rong-avatar-small"></component>
+                            <div class="rong-profile-main">{{getUsername(user)}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="rong-group-selected">
+                <h3 v-if="selected.length" class="rong-group-selected-hd">{{localeFormat(locale.contact.selectedMember, selected.length)}}</h3>
+                <h3 v-else class="rong-group-selected-hd">{{locale.selectDelTip}}</h3>
+
+                <ul class="rong-group-selected-bd">
+                    <li class="rong-profile" v-for="(user, index) in selected">
+                        <component is="avatar" :user="user" class="rong-profile-aside rong-avatar-small"></component>
+                        <div class="rong-profile-main" v-text="getUsername(user)"></div>
+                        <a href="" class="rong-item-remove" :title="locale.btns.remove" @click.prevent="remove(index)"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="rong-group-buttons">
+            <button type="button" class="rong-button" @click.prevent="close">{{locale.btns.cancel}}</button>
+            <button type="button" class="rong-button rong-delete" @click="removeMembers" :disabled="selected.length < 1">{{locale.btns.remove}}</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="rong-entry">
+    <div class="rong-entry-hd rong-dragable"></div>
+    <div class="rong-entry-bd rong-clearfix">
+        <div class="rong-entry-aside">
+            <div class="rong-product">
+                <span class="rong-product-name">{{locale.product.productName}}</span>
+            </div>
+        </div>
+        <div class="rong-entry-main">
+            <div class="rong-entry-main-hd">
+                <h1 class="rong-selected">{{locale.title}}</h1>
+            </div>
+    
+            <component :is="currentView" @current-view="currentViewChanged"></component>    
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="rong-contact-main">
+    <div class="rong-contact-hd rong-dragable">
+        <h2 class="rong-contact-title">{{locale.title}}</h2>
+    </div>
+    
+    <div class="rong-contact-content">    
+        <ul class="rong-contact-list">
+            <li class="rong-profile" v-for="item in stars">
+                <component is="avatar" class="rong-profile-aside rong-avatar-middle" @clickavatar="userProfile(item.id)" :user="item"></component>
+                <div class="rong-profile-main">
+                    <a class="rong-profile-name" @click.prevent="userProfile(item.id)" href="#user">{{getUsername(item)}}</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

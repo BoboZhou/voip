@@ -1,0 +1,45 @@
+<div class="rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-group-dialog rong-card">
+        <transition name="rong-dialog-tip">
+            <div v-if="tip" class="rong-dialog-tip">{{tip}}</div>
+        </transition>
+        <a href="" class="rong-dialog-close" :title="locale.btns.close" @click.prevent="close"></a>
+        
+        <div class="rong-clearfix">
+            <div class="rong-group-userlist" :class="['rong-group-selected-' + tab]">
+                <div class="rong-group-tab-hd rong-clearfix">
+                    <a v-if="isStaff" class="rong-group-hd-org" href="#org" @click.prevent="setTab('org')">{{locale.contact.orgContact}}</a>
+                    <a class="rong-group-hd-star" href="#star" @click.prevent="setTab('star')">{{locale.contact.star}}</a>
+                    <a class="rong-group-hd-friend" href="#friend" @click.prevent="setTab('friend')">{{locale.contact.friend}}</a>
+                </div>
+                
+                <div class="rong-group-tab-bd">
+                    <component v-if="tab === 'star'" is="star" :selected="selected" @added="added" @removed="removed"></component>
+                    <component v-if="tab === 'org'" is="org" :selected="selected" @added="added" @removed="removed"></component>
+                    <component v-if="tab === 'friend'" is="friend" :selected="selected" @added="added" @removed="removed"></component>
+                </div>
+            </div>
+
+            <div class="rong-group-selected">
+                <h3 v-if="selected.length > 0" class="rong-group-selected-hd">{{localeFormat(locale.contact.selectedMember, selected.length)}}</h3>
+                <h3 v-else class="rong-group-selected-hd">{{locale.contact.emptyMember}}</h3>
+                
+                <div class="rong-group-selected-bd">
+                    <ul>
+                        <li class="rong-profile" v-for="item in selected">
+                            <component is="avatar" :user="item" class="rong-profile-aside rong-avatar-small"></component>
+                            <div class="rong-profile-main">{{getUsername(item)}}</div>
+                            <a href="#remove" class="rong-item-remove" :title="locale.btns.remove" @click.prevent="removeMembers(item)"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="rong-group-buttons">
+            <button class="rong-button" type="button" @click.prevent="close">{{locale.btns.cancel}}</button>
+            <button class="rong-button rong-submit" type="button" :disabled="selected.length < 1" @click="submit()">{{locale.btns.confirm}}</button>
+        </div>
+
+    </div>
+</div>

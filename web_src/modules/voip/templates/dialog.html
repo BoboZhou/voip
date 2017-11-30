@@ -1,0 +1,11 @@
+<div class="rong-dialog rong-titlebar" v-show="closeBefore">
+    <div class="rong-dialog-inner rong-messagebox">
+        <a @click.prevent="closeBefore = false" href="#close" :title="locale.btns.close" class="rong-dialog-close">×</a>
+        <div class="rong-dialog-hd"><h2 class="rong-dialog-title">{{locale.tips.messageBoxTitle}}</h2></div>
+        <div class="rong-messagebox-bd">{{locale.tips.closeBefore}}</div>
+        <div class="rong-messagebox-ft">
+            <button @click="closeBefore = false" class="rong-button" type="button">{{locale.btns.cancel}}</button>
+            <button @click="enterClose" class="rong-button rong-submit" type="button">{{locale.btns.confirm}}</button>
+        </div>
+    </div>
+</div>

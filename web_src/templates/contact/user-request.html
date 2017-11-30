@@ -1,0 +1,68 @@
+<div class="rong-dialog" v-if="user" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-user">
+        <a @click.prevent="close" href="" class="rong-dialog-close" :title="locale.btns.close"></a>
+        <div class="rong-user-hd rong-clearfix" v-if='user'>
+            <div class="rong-user-avatar">
+                <component is="avatar" :user="user" class="rong-avatar-large"></component>
+                <a v-show='isLoginUser' href="#edit-avatar" @click.prevent="setAvatarEditable">{{locale.editAvatar}}</a>
+            </div>
+            <button v-if="isFriend" class="rong-button rong-user-remove" @click="removeFriend()">{{locale.removeFriend}}</button>           
+            <button v-else-if="!isLoginUser && !isRequesting" class="rong-button rong-submit rong-user-add" @click="addFriend()">{{locale.addFriend}}</button>
+            <div class="rong-user-range">
+                <div class="rong-user-name">
+                    <label>{{user.name}}</label>
+                    <template v-if="showStar"> 
+                        <button v-if="user.star" class="rong-user-favorite rong-user-favorite-selected" @click="unsetStar" :title="locale.unsetStar"></button>
+                        <button v-else class="rong-user-favorite" type="button" @click="setStar" :title="locale.setStar"></button>
+                    </template>
+                </div>
+                <div v-if="showEditAlias" class="rong-user-alias">
+                    <input v-if="aliasEditable" type="text" class="rong-field" v-model="alias" maxlength="10" v-focus @blur="setAlias"  @keyup.enter="setAlias" @keyup.esc="cancelAlias">
+                    <template v-else>
+                        <label>{{user.alias || locale.aliasEmpty}}</label>
+                        <a href="" class="rong-user-alias-edit" :title="locale.btns.edit" @click.prevent="setAliasEditable"></a>
+                    </template>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 请求了尚未通过 isRequesting-->
+        <div v-if='isRequesting' class="rong-user-request">
+            <p>{{user.requestInfo.content}}{{locale.requestInfo}}</p>
+        </div>
+
+        <template v-if='user'>
+            <h2 v-if="user.companyName" class="rong-user-title">{{user.companyName}}</h2>
+            <ul class="rong-user-detail">
+                <li v-if="user.mobile">
+                    <label>{{locale.user.mobile}}</label>
+                    <span>{{user.mobile}}</span>
+                </li>
+                <li v-if="user.tel">
+                    <label>{{locale.user.tel}}</label>
+                    <span>{{user.tel}}</span>
+                </li>
+                <li v-if="user.email">
+                    <label>{{locale.user.email}}</label>
+                    <span><a :href="'mailto:' + user.email">{{user.email}}</a></span>
+                </li>
+                <li v-if="user.deptName">
+                    <label>{{locale.user.deptName}}</label>
+                    <span>{{user.deptName}}</span>
+                </li>
+                <li v-if="user.dutyName">
+                    <label>{{locale.user.dutyName}}</label>
+                    <span>{{user.dutyName}}</span>
+                </li>
+                <li v-if="user.supervisorName">
+                    <label>{{locale.user.supervisorName}}</label>
+                    <span>{{user.supervisorName}}</span>
+                </li>
+            </ul>
+            <!-- <button class="rong-button rong-user-primary" type="button" v-if="showStartCoversation" @click="startConversation">发起会话</button> -->
+            <component v-if="avatarEditable" is="edit-avatar" @close="avatarEditable = false;" @srcchange="srcChanged"></component>        
+        </template>
+
+         <button v-if='isRequesting' class="rong-button rong-user-primary" @click="acceptFriend(user)">{{locale.accept}}</button>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="rong-ringing rong-titlebar" v-show=" status == 'ringing' ">
+    <div class="rong-callinfo">
+        <img class="rong-avatar-img" v-if="senderUser.avatar" :src="senderUser.avatar">
+        <div v-else class="rong-avatar-item" :class="['rong-avatar-theme-' + getThemeIndex(senderUser.id)]">{{senderUser.name | slice}}</div>
+        <div>{{senderUser.name}} 
+        <span v-if="isShareScreen">{{locale.ringing.shareDesktop}}</span>
+        <span v-else>
+            <span v-show="isVideo">{{locale.ringing.videoInvite}}</span>
+            <span v-show="isAudio">{{locale.ringing.audioInvite}}</span>
+        </span>
+        </div>
+        <div v-if="!isPrivate" class="rong-other-name">{{locale.ringing.member}}{{getOtherName()}}</div>
+    </div>
+    <div class="rong-ringing-buttons">
+        <button class="rong-accept" @click="accept()"></button>
+        <button class="rong-hangup" @click="reject()"></button>
+    </div>
+</div>

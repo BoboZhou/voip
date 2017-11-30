@@ -1,0 +1,22 @@
+<div class="rong-avatar" @click="$emit('clickavatar')">
+    <template v-if="userData">
+        <div v-if="userData.avatar" class="rong-avatar-img" :style="{'background-image': 'url(' + userData.avatar + ')'}"></div>
+        <div v-else class="rong-avatar-item" :class="['rong-avatar-theme-' + getThemeIndex(userData.id)]">{{userData.name | slice}}</div>
+        <i v-if="onlineStatus" class="rong-avatar-status" :class="['rong-avatar-' + onlineStatus]"></i>
+    </template>
+
+    <template v-else-if="group">
+        <div v-if="group.avatar" class="rong-avatar-img" :style="{'background-image': 'url(' + group.avatar + ')'}"></div>
+        <div v-else-if="group.memberAvatars" class="rong-avatar-group rong-avatar-sprite" :class="['rong-avatar-' + memberAvatars.length]">
+            <div class="rong-avatar-group-bd">
+                <template v-for="(src, index) in memberAvatars">
+                    <span v-if="src" class="rong-avatar-sprite-item rong-avatar-img" :style="{'background-image': 'url(' + src + ')'}"></span>
+                    <span v-else :class="['rong-avatar-sprite-item rong-avatar-theme-' + getThemeIndex(group.memberIdList[index])]">
+                        <em>{{group.memberNames[index] | slice}}</em>
+                    </span>
+                    <br>
+                </template>
+            </div>
+        </div>
+    </template>
+</div>

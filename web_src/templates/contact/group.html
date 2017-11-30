@@ -1,0 +1,21 @@
+<div class="rong-contact-main">
+    <div class="rong-contact-hd rong-dragable">
+        <h2 class="rong-contact-title">{{locale.title}}</h2>
+    </div>
+    
+    <div class="rong-contact-content">    
+        <ul class="rong-contact-list">
+            <li class="rong-profile" v-for="group in groups">
+                <component is="avatar" class="rong-profile-aside rong-avatar-middle" :group="group" @clickavatar="startConversation(group.id)"></component>
+
+                <div class="rong-profile-main">
+                    <div class="rong-profile-name">
+                        <a @click.prevent="startConversation(group.id)" href="#user">{{getGroupName(group)}}</a>
+                        <span class="rong-tag">{{getGroupType(group.type)}}</span>
+                    </div>
+                    <div class="rong-profile-count">{{group.memberCount}}{{locale.contact.person}}</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

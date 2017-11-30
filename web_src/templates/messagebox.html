@@ -1,0 +1,11 @@
+<div class="rong-common rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-messagebox">
+        <a @click.prevent="close" href="#close" :title="locale.btns.close" class="rong-dialog-close"></a>
+        <div class="rong-dialog-hd"><h2 class="rong-dialog-title">{{title}}</h2></div>
+        <div class="rong-messagebox-bd">{{message}}</div>
+        <div class="rong-messagebox-ft">
+            <button v-if="type === 'confirm'" @click="close" class="rong-button" type="button">{{locale.btns.cancel}}</button>
+            <button @click="confirm" class="rong-button rong-submit" type="button" v-autofocus>{{submitText}}</button>
+        </div>
+    </div>
+</div>

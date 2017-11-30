@@ -1,0 +1,97 @@
+<div class="rong-call " v-show=" status == 'call' ">
+    <div class="rong-title rong-titlebar">
+        <div class="rong-title-info rong-title-full" :class="{'rong-title-left': !isMac}">
+            <div v-if="waiting">
+                <span v-if="waiting" >{{locale.calling.waitingResponse}}</span>
+            </div>
+            <div v-else>
+                <div v-if="type==1" class="rong-title-audio">
+                    <span>{{secondToMinute(time)}}</span>
+                </div>
+                <div v-else class="rong-title-video">
+                    <div class="tong-title-video-box" v-if="isShareScreen">
+                        <span>
+                            {{locale.calling.shareScreen}}
+                        </span>
+                        <span>{{secondToMinute(time)}}</span>
+                    </div>
+                    <div class="tong-title-video-box" v-else>
+                        <span v-if="isPrivate">{{templateFormat(locale.calling.videoChat, self.name)}}</span>
+                        <span v-else>
+                            {{locale.calling.multiVideoChat}}
+                        </span>
+                        <span>{{secondToMinute(time)}}</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="rong-title-buttons" v-if="!isMac">
+            <a class="rong-title-min" href="#" @click.prevent="min()" :title="locale.btns.minimize"></a>
+            <a class="rong-title-max" href="#" v-if="isMaxWin" @click.prevent="unmax()" :title="locale.btns.restore"></a>
+            <a class="rong-title-max" href="#" v-else @click.prevent="max()" :title="locale.btns.maximize"></a>
+            <a class="rong-title-close" href="#" @click.prevent="close()" :title="locale.btns.close"></a>
+        </div>
+    </div>
+    <div class="rong-call-main-box">
+        <div class="rong-call-main" :class="{'rong-hiddenvideo': hiddenVideo(main)}"  v-video="main">
+            <div v-show="showAvatarImg(main)" class="rong-call-main-bg"  :style="{'background-image': 'url(' + main.avatar + ')'}"></div>
+            <div v-show="showAvatarImg(main)" class="rong-avatar-img" :style="{'background-image': 'url(' + main.avatar + ')'}">
+                <div class="rong-user-name">{{main.name}}</div>
+            </div>
+            <div v-show="showAvatarSign(main)" class="rong-avatar-item" :class="['rong-avatar-theme-' + getThemeIndex(main.id)]">{{main.name | slice}}
+                <div class="rong-user-name">{{main.name}}</div>
+            </div>
+            <div v-show="main.waiting" class="rong-avatar-waiting">
+                <div class="rong-avatar-waiting-bd">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </div>
+            </div>
+            <div v-show="main.busy" class="rong-user-busy">{{locale.tips.busy}}</div>
+        </div>
+        <ul class="rong-call-other" :class="[isAudio && !isPrivate ? ('rong-call-other-width-' + memberList.length) : '']" v-scrollbar-x="other.length">
+            <li class="rong-user" v-for="item in other" :class="{'rong-hiddenvideo': hiddenVideo(item)}" @click="switchMain(item)" v-video="item">
+                <div v-show="showAvatarImg(item)" class="rong-user-bg" :style="{'background-image': 'url(' + item.avatar + ')'}"></div>
+                <div v-show="showAvatarImg(item)" class="rong-avatar-img" :style="{'background-image': 'url(' + item.avatar + ')'}"></div>
+                <div v-show="showAvatarSign(item)" class="rong-avatar-item" :class="['rong-avatar-theme-' + getThemeIndex(item.id)]">{{item.name | slice}}</div>
+                <div class="rong-user-name">{{item.name}}</div>
+                <div v-show="item.waiting" class="rong-avatar-waiting">
+                    <div class="rong-avatar-waiting-bd">
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                    </div>
+                </div>
+                <div v-show="item.busy" class="rong-user-busy">{{locale.tips.busy}}</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="rong-call-foot" :class="{'rong-waiting': waiting}">
+        <div class="rong-control-btns">
+            <div v-if="!isShareScreen" v-show="!self.video" class="rong-control-button rong-camera" @click="openVideo()">
+                <i></i>
+                {{locale.btns.openCamera}}
+            </div>
+            <div v-if="!isShareScreen" v-show="self.video" class="rong-control-button rong-camera-close" @click="closeVideo()">
+                <i></i>
+                {{locale.btns.closeCamera}}
+            </div>
+            <div v-show="!self.audio" class="rong-control-button rong-microphone" @click="openAudio()">
+                <i></i>
+                {{locale.btns.openMicrophone}}
+            </div>
+            <div v-show="self.audio" class="rong-control-button rong-microphone-close" @click="closeAudio()">
+                <i></i>
+                {{locale.btns.closeMicrophone}}
+            </div>
+            <div class="rong-control-button rong-invitemember" @click="addMember()">
+                <i></i>
+                {{locale.btns.addMember}}
+            </div>
+        </div>
+        <button class="rong-hangup" @click="hungup()"></button>
+    </div>
+</div>

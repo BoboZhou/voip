@@ -1,0 +1,36 @@
+<div class="rong-conversation-editor" @dragover="dragover" @drop="drop">
+    <div class="rong-toolbar">
+        <div class="rong-toolbar-item">
+            <i class="rong-toolbar-emoji" :title="locale.emoji" @click="toggleEmoji"></i>
+        </div>
+        <div class="rong-toolbar-item" v-if="screenshotSupported">
+            <i class="rong-toolbar-screenshot" :title="locale.screenshot" @click="screenshot"></i>
+        </div>
+        <div class="rong-toolbar-item">
+            <input :title="locale.sendFile" type="file" multiple="multiple" @change="fileChanged($event)">
+            <i class="rong-toolbar-file"></i>
+        </div>         
+        <div class="rong-toolbar-item">
+            <i class="rong-toolbar-card" :title="locale.sendCard" @click="sendCard"></i>
+        </div>
+        <div class="rong-toolbar-item" v-if="support.voip">
+            <i class="rong-toolbar-video" title="视频聊天" @click="sendVideo()"></i>
+        </div>
+        <div class="rong-toolbar-item" v-if="support.voip">
+            <i class="rong-toolbar-audio" title="语音聊天" @click="sendAudio()"></i>
+        </div>
+    </div>
+    <div class="rong-conversation-field">
+        <div class="rong-conversation-field-bd">
+            <component @click.native="clearUnReadCount" is="edit-box" ref="editor" :atMembers="atMembers" :draft="draft" :autoFocus="autoFocus" 
+            @enter="sendMessage" 
+            @editBoxChange="messageInputChanged" 
+            @paste="paste" 
+            @prepareinput="prepareinput"
+            @shareScreen="shareScreen"
+            ></component>
+        </div>
+        <button class="rong-button rong-submit" type="button" :disabled="!sendBtnAvailable" @click="sendMessage">{{locale.btns.send}}</button>
+    </div>
+    <component is="emoji-panel" v-show="showEmojiPanel" @selectedEmoji="selectedEmoji" @hideEmojiPanel="hideEmojiPanel"></component>
+</div>

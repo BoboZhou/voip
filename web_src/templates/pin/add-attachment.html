@@ -1,0 +1,32 @@
+<div class="rong-dialog" v-if="show">
+    <div class="rong-dialog-inner rong-user rong-pin-dialog rong-dialog-attach">
+        <div class="rong-pin-attach-title">
+            <h3>{{locale.components.newPin.addAtta}}</h3>
+            <a @click.prevent="close()" href="" class="rong-dialog-close" :title="locale.btns.close"></a>
+        </div>
+        <div class="rong-pin-attach-content">
+            <div class="rong-pin-attach-box" v-for="item in attachments">
+                <div v-if="isShowProgress(item)" class="rong-pin-attach-upload-progress" :style="{width: getProgressWidth(item)}">
+                </div>
+                <span v-if="isShowProgress(item)" class="rong-upload-progress-text">{{getProgress(item)}}</span>
+                <div class="rong-pin-file-box">
+                    <i class="rong-pin-file" :class="getFileIconClass(item.data.name)"></i>
+                </div>
+                <div class="rong-pin-attach-doc">
+                    <p class="rong-pin-doc-title" :title="item.data.name">{{getAttachName(item.data.name)}}</p>
+                    <p class="rong-pin-doc-size">{{formatFileSize(item.data.size)}}</p>
+                </div>
+                <a v-if="item.content.imageUri || item.content.fileUrl" @click.prevent="removeAttachment(item)" href="">{{locale.btns.remove}}</a>
+                <a v-if="isShowProgress(item)" class="rong-upload-pin-cancel" @click.prevent="removeAttachment(item)" href="">{{locale.btns.cancel}}</a>
+            </div>
+        </div>
+        <div class="rong-pin-attach-buttons">
+            <button @click.prevent="close()">{{locale.btns.confirm}}</button>
+            <div>
+                <a @click.prevent="" href="">{{locale.components.newPin.addAtta}}</a>
+                <input id="rongAddAttachment" @change="addAttachment($event)" multiple="multiple" type="file" :name="locale.components.newPin.addAtta">
+            </div>
+        </div>
+        
+    </div>
+</div>

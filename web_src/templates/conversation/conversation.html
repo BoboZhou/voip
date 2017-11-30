@@ -1,0 +1,48 @@
+<div v-if="isConversationView" class="rong-component" :class="{'conversation-view-group': isGroup}"> 
+    <component is="status" :code="status"></component>
+
+    <div class="rong-conversation-hd rong-dragable">
+        <div class="rong-profile">
+            <component is="avatar" v-if="conversation.user" :user="conversation.user" class="rong-profile-aside rong-avatar-small" :online-status="userStatus" @clickavatar="userProfile(conversation.user.id)"></component>
+            <component is="avatar" v-else-if="conversation.group" :group="conversation.group" class="rong-profile-aside rong-avatar-group rong-avatar-small"></component>
+            
+            <div class="rong-profile-main">
+                <div class="rong-profile-name">
+                    <a v-if="conversation.user" href="#user" @click.prevent="userProfile(conversation.user.id)">{{getUsername(conversation.user)}}</a>
+                    <template v-else-if="conversation.group">
+                        <span class="rong-disable-select">{{getGroupName(conversation.group)}}</span>
+                        <span class="rong-tag">{{getGroupType(conversation.group.type)}}</span>
+                    </template>
+                </div>
+                <div v-if="conversation.user" class="rong-profile-status">{{getStatusText()}}</div>
+                <div v-else-if="conversation.group" class="rong-profile-count rong-disable-select">{{conversation.group.memberCount}}{{locale.contact.person}}</div>
+            </div>
+        </div>
+
+        <div class="rong-tools" :class="['rong-selected-' + panel]">
+            <a href="#conversation_history" @click.prevent.stop="panel = 'history' " class="rong-tools-history" :title="locale.history"></a>
+            <a v-if="isPrivate" @click.prevent.stop="panel = 'conversation-setting' "
+                class="rong-tools-conversation" href="#conversation_setting" :title="locale.setting"></a>
+            <button v-else-if="isGroup" @click.prevent.stop="panel = 'group-setting'"
+                class="rong-tools-group" :disabled="!validGroup" :title="locale.groupSetting"></button>
+        </div>
+    </div>
+    
+    <div class="rong-conversation">
+        <div v-if="busy" class="rong-loading"><span>{{locale.tips.loading}}</span></div>
+        <component v-else is="message-list" ref="list" :status="status" :conversation="conversation" :append-message="newMessage" :inGroup="inGroup" @setInGroup="setInGroup"></component>
+    </div>
+    <component is="message-input" ref="editor" 
+        :draft="conversation.draft" :atMembers="members" :autoFocus="autoFocus" :inGroup="inGroup" 
+        @sendAudio="sendAudio"
+        @sendVideo="sendVideo"
+        @shareScreen="shareScreen"
+        @sendMessage="sendTextMessage" 
+        @sendCopyMessage="sendCopyMessage" 
+        @append="append" 
+        @prepareinput="prepareinput" 
+        @setInGroup="setInGroup"></component>
+    <transition name="rong-setting-slide">
+        <component :is="panel" @hidepanel="hidePanel" @set-property="setProperty" :conversation="conversation" :user="conversation.user" :group="conversation.group"></component>
+    </transition>
+</div>

@@ -1,0 +1,7 @@
+<div class="rong-emoji-panel" @mouseover="show" @mouseout="hide">
+	<ul>
+        <li v-for="emoji in list">
+            <span class="rong-emoji-item" :title="emoji[locale.emoji.key]" v-html="emoji.html" @click="selectEmoji(emoji[locale.emoji.key])"></span>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,14 @@
+<ul class="rong-account">
+    <template v-if="account">
+        <li>
+            <component is="avatar" :user="account" class="rong-avatar-large"></component>
+        </li>
+        <li>{{account.name}}</li>
+        <li v-if="account.mobile">
+            <label>{{locale.mobile}}</label><span>{{format(account.mobile)}}</span>
+        </li>
+    </template>
+    <li class="rong-account-logout">
+        <button class="rong-button rong-submit" type="button" @click="logout">{{locale.btns.logout}}</button>
+    </li>
+</ul>

@@ -1,0 +1,112 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="renderer" content="webkit" />
+
+<link rel="stylesheet" href="css/common.css" _group="rce">
+<link rel="stylesheet" href="css/login.css" _group="rce">
+<link rel="stylesheet" href="css/conversation.css" _group="rce">
+<link rel="stylesheet" href="css/contact.css" _group="rce">
+<link rel="stylesheet" href="css/setting.css" _group="rce">
+<link rel="stylesheet" href="css/pin.css" _group="rce">
+
+<script src="lib/jquery-3.1.1.js"></script>
+<script src="lib/vue-2.3.3.js"></script>
+<script src="lib/vue-router-2.1.1.js"></script>
+<script src="lib/RongIMLib-1019.js"></script>
+<script src="lib/Libamr-2.2.5.min.js"></script>
+
+<script src="lib/underscore-1.8.3.js"></script>
+<script src="modules/voip/lib/rong-calllib-util.js"></script>
+<script src="modules/voip/lib/rong-calllib-sendmsg.js"></script>
+
+<script src="js/locale/zh.js" _group="cmpt"></script>
+<script src="js/locale/en.js" _group="cmpt"></script>
+<script src="lib/jquery.caret-0.3.1.js" _group="cmpt"></script>
+<script src="lib/RongIMVoice-2.2.5.js" _group="cmpt"></script>
+<script src="lib/qrcode.js" _group="cmpt"></script>
+<script src="lib/biaoqing.min.js" _group="cmpt"></script>
+<script src="modules/emoji/RongIMEmoji.js" _group="cmpt"></script>
+<script src="modules/upload/qiniu.js" _group="cmpt"></script>
+<script src="modules/upload/upload.js" _group="cmpt"></script>
+<script src="modules/upload/init.js" _group="cmpt"></script>
+
+<script src="lib/moment-2.17.1.js" _group="cmpt"></script>
+<script src="js/utils.js" _group="cmpt"></script>
+<script src="js/common.js" _group="cmpt"></script>
+<script src="js/validate.js" _group="cmpt"></script>
+<script src="js/favicon.js" _group="cmpt"></script>
+<script src="js/fullscreen.js" _group="cmpt"></script>
+
+<script src="js/datamodel.js"></script>
+
+<script src="js/login.js" _group="im"></script>
+<script src="js/signup.js" _group="im"></script>
+<script src="js/forget-password.js" _group="im"></script>
+<script src="js/status.js" _group="im"></script>
+<script src="js/online-status.js" _group="im"></script>
+<script src="js/avatar.js" _group="im"></script>
+<script src="js/drag.js" _group="im"></script>
+<script src="js/edit-avatar.js" _group="im"></script>
+<script src="js/context-menu.js" _group="im"></script>
+<script src="js/search.js" _group="im"></script>
+<script src="js/voip-invitemember.js" _group="im"></script>
+
+<script src="js/message/text.js" _group="im"></script>
+<script src="js/message/image.js" _group="im"></script>
+<script src="js/message/file.js" _group="im"></script>
+<script src="js/message/voice.js" _group="im"></script>
+<script src="js/message/location.js" _group="im"></script>
+<script src="js/message/card.js" _group="im"></script>
+<script src="js/message/sight.js" _group="im"></script>
+<script src="js/message/bqmmemoji.js" _group="im"></script>
+<script src="js/message/unknown.js" _group="im"></script>
+<script src="js/message/video.js" _group="im"></script>
+<script src="js/message/audio.js" _group="im"></script>
+<script src="js/message/share-screen.js" _group="im"></script>
+
+<script src="js/conversation/latest-message.js" _group="im"></script>
+<script src="js/conversation/conversation-list.js" _group="im"></script>
+<script src="js/conversation/conversation-setting.js" _group="im"></script>
+<script src="js/conversation/group-setting.js" _group="im"></script>
+<script src="js/conversation/history.js" _group="im"></script>
+<script src="js/conversation/message-list.js" _group="im"></script>
+<script src="js/conversation/edit-box.js" _group="im"></script>
+<script src="js/conversation/emoji-panel.js" _group="im"></script>
+<script src="js/conversation/at-panel.js" _group="im"></script>
+<script src="js/conversation/message-input.js" _group="im"></script>
+<script src="js/conversation/conversation.js" _group="im"></script>
+<script src="js/conversation/forward.js" _group="im"></script>
+<script src="js/conversation/card.js" _group="im"></script>
+<script src="js/conversation/ack.js" _group="im"></script>
+<script src="js/conversation/preview-image.js" _group="im"></script>
+
+<script src="js/contact/user.js" _group="im"></script>
+<script src="js/contact/star.js" _group="im"></script>
+<script src="js/contact/group.js" _group="im"></script>
+<script src="js/contact/list.js" _group="im"></script>
+<script src="js/contact/org.js" _group="im"></script>
+<script src="js/contact/user-request.js" _group="im"></script>
+<script src="js/contact/add-friend.js" _group="im"></script>
+<script src="js/contact/verify-friend.js" _group="im"></script>
+<script src="js/contact/friends.js" _group="im"></script>
+<script src="js/contact/request-friend.js" _group="im"></script>
+
+<script src="js/setting/account.js" _group="im"></script>
+<script src="js/setting/password.js" _group="im"></script>
+<script src="js/setting/system.js" _group="im"></script>
+<script src="js/setting/layout.js" _group="im"></script>
+<script src="js/group/star.js" _group="im"></script>
+<script src="js/group/org.js" _group="im"></script>
+<script src="js/group/friend.js" _group="im"></script>
+<script src="js/group/create.js" _group="im"></script>
+<script src="js/group/removemembers.js" _group="im"></script>
+
+<script src="js/pin/nav.js" _group="im"></script>
+<script src="js/pin/received.js" _group="im"></script>
+<script src="js/pin/sent.js" _group="im"></script>
+<script src="js/pin/pin-detail.js" _group="im"></script>
+<script src="js/pin/add-pin.js" _group="im"></script>
+<script src="js/pin/add-attachment.js" _group="im"></script>
+<script src="js/pin/add-receiver.js" _group='im'></script>
+
+<script src="js/routes.js" _group="im"></script>
+<script src="js/im.js" _group="im"></script>

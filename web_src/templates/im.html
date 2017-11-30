@@ -1,0 +1,72 @@
+<div class="rong-im-inner"
+    :class="[auth ? 'rong-authed' : 'rong-unauthed', 'rong-os-' + os]"
+    @dragover.prevent.stop=""
+    @drop.prevent.stop=""
+    @mousedown="mousedown"
+    @click="$emit('imclick', $event)" v-cloak>
+    <div v-if="os === 'win32' || os === 'linux' " class="rong-titlebar">
+        <div class="rong-titlebar-logo"><span>{{locale.product.productName}}</span></div>
+        <div class="rong-titlebar-buttons">
+            <a @click.prevent="min" class="rong-titlebar-min" href="" :title="locale.btns.minimize"></a>
+            <a @click.prevent="restore" v-if="isMaxWindow" class="rong-titlebar-restore" href="" :title="locale.btns.restore"></a>
+            <a @click.prevent="max" v-else class="rong-titlebar-max" href="" :title="locale.btns.maximize"></a>
+            <a @click.prevent="close" class="rong-titlebar-close" href="" :title="locale.btns.close"></a>
+        </div>
+    </div>
+
+    <template v-if="auth">
+        <div class="rong-nav rong-dragable">
+            <a class="rong-nav-avatar" @click.prevent="userProfile" href="#user">
+                <component class="rong-avatar-middle" is="avatar" :user="loginUser"></component>
+            </a>
+            <component class="rong-online-status" is="online-status"></component>
+
+
+            <ul class="rong-nav-tab">
+                <li class="rong-nav-conversation">
+                    <em v-if="routePathStartWith('/conversation')" :title="locale.components.welcome.conversation">
+                        <span v-if="unReadCount" class="rong-message-count">{{unReadCount}}</span>
+                    </em>
+                    <router-link v-else :title="locale.components.welcome.conversation" to="/conversation">
+                        <span v-if="unReadCount" class="rong-message-count">{{unReadCount}}</span>
+                    </router-link>
+                </li>
+                <li class="rong-nav-contact">
+                    <em v-if="routePathStartWith('/contact')" :title="locale.components.welcome.contact" >
+                        <span v-if="requestUnReadCount" class="rong-message-count"></span>
+                    </em>
+                    <router-link v-else :title="locale.components.welcome.contact" to="/contact">
+                        <span v-if="requestUnReadCount" class="rong-message-count"></span>
+                    </router-link>
+                </li>
+                <li class="rong-nav-pin" :class="{'rong-nav-pin-comment': !pinUnReadCount.unConfirm}">
+                    <em v-if="routePathStartWith('/pin')">
+                        <span v-if="pinUnReadCount.unConfirm || pinUnReadCount.unComment" class="rong-message-count">{{pinNavCount}}</span>
+                    </em>
+                    <router-link v-else title="PIN" to="/pin">
+                        <span v-if="pinUnReadCount.unConfirm || pinUnReadCount.unComment" class="rong-message-count">{{pinNavCount}}</span>
+                    </router-link>
+                </li>
+            </ul>
+
+
+            <ul class="rong-nav-tab rong-nav-fixed">
+                <li class="rong-nav-setting">
+                    <a :title="locale.components.welcome.setup" @click.prevent="showSetting" href="#setting/account"></a>
+                </li>
+            </ul>
+        </div>
+
+        <keep-alive>
+            <router-view name="list" class="rong-list"></router-view>
+        </keep-alive>
+
+        <div v-if="showWelcomePage" class="rong-welcome">
+            <div class="rong-welcome-hd rong-dragable"></div>
+            <div class="rong-welcome-bd"><p>{{locale.components.welcome.motto}}</p></div>
+        </div>
+        
+        <router-view name="main" class="rong-main"></router-view>    
+    </template>
+    <router-view v-else></router-view>
+</div>

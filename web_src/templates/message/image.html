@@ -1,0 +1,16 @@
+<div class="rong-conversation-one-message rong-conversation-image">
+    <div class="rong-thumbnail" @click="showImage(message.messageUId)" :style="loaded ? style : null">
+        <img class="rong-thumbnail-small" v-if="base64" :src="base64" alt="" @load="updateThumbnailHeight($event)" v-show="!loaded">
+        <img class="rong-thumbnail-large" v-if="message.content.imageUri" @load="largeImageLoaded($event)" :src="message.content.imageUri" alt="">
+        <i class="rong-thumbnail-top"></i>
+        <i class="rong-thumbnail-bottom"></i>
+        <div class="rong-progress">
+            <div class="rong-progress-bd" v-show="isUploading">
+                <svg width="24px" height="24px" version="1.1" xmlns="http://www.w3.org/2000/svg">   
+                    <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none" style="opacity: 0.5"/>
+                    <path stroke="white" stroke-width="2" transform="translate(12,12)" fill="none" v-bind:d="path" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>

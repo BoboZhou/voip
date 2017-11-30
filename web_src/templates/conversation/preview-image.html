@@ -1,0 +1,18 @@
+<div class="rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-preview" @keyup.enter="alert()">
+        <a href="" class="rong-dialog-close" :title="locale.btns.close" @click.prevent="close"></a>
+
+        <div class="rong-dialog-hd">
+            <h2 class="rong-dialog-title">{{locale.title}}</h2>
+        </div>
+
+        <div class="rong-preview-bd">
+            <img :src="src" alt="">
+        </div>
+        
+        <div class="rong-group-buttons">
+            <button class="rong-button" type="button" @click.prevent="close">{{locale.btns.cancel}}</button>
+            <button class="rong-button rong-submit" type="button" v-auto-focus @click="submit">{{locale.btns.send}}</button>
+        </div>
+    </div>
+</div>

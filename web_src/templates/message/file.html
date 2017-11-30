@@ -1,0 +1,38 @@
+<div class="rong-conversation-one-message rong-file" :class="{'rong-file-uploading': uploading(message)}" @dblclick.prevent="openFile">
+    <div class="rong-file-inner">
+        <i class="rong-file-icon" :class="['rong-file-' + message.content.type]"></i>
+        <div class="rong-file-hd">
+            <a v-if="support.openFile && downloadStatus === 'DOWNLOADED' " @click.prevent="openFile" :title="locale.openFile + message.content.name" :href="message.content.fileUrl">
+                <span class="rong-file-basename" v-html="highlight(basename)"></span>
+                <span v-html="highlight(extname)"></span>
+            </a>
+            <a v-else :title="locale.downloadFile + message.content.name" :href="message.content.fileUrl" :download="message.content.name">
+                <span class="rong-file-basename" v-html="highlight(basename)"></span>
+                <span v-html="highlight(extname)"></span>
+            </a>
+        </div>
+        <div class="rong-file-size">{{canceled ? locale.cancelState : size}}</div>
+        <div class="rong-file-metadata">
+            {{getUsername(message.user)}}
+            {{dateFormat(message.sentTime, 'DD/MM/YYYY HH:mm')}}
+            {{canceled ? locale.cancelState : size}}
+        </div>
+
+        <template v-if="uploading(message)">
+            <div class="rong-file-progress"><span :style="{width: message.progress + '%'}"></span></div>
+            <a class="rong-file-cancel" :title="locale.btns.cancel" @click="cancel"></a>
+        </template>
+
+        <a v-else-if="downloadStatus === 'READY' || downloadStatus === 'CANCELLED' "
+            class="rong-file-download" :title="locale.downloadFile + message.content.name" target="_blank"
+            :href="message.content.fileUrl" :download="message.content.name"></a>
+        
+        <template v-else-if="downloadStatus === 'DOWNLOADING' ">
+            <div class="rong-file-progress"><span :style="{width: downloadProgress + '%'}"></span></div>
+            <a class="rong-file-cancel" :title="locale.btns.cancel"  @click="cancelDownlad"></a>
+        </template>
+
+        <a v-else-if="support.openFolder && downloadStatus === 'DOWNLOADED' "
+            href="#open-folder" class="rong-file-open" :title="locale.openFolder" @click.prevent="openFolder"></a>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RCE</title>
+<!--#include virtual="inc/favicon.html" -->
+<style>
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+</style>
+<!--#include virtual="inc/setting.html" -->
+<script src="js/desktop.js"></script>
+<!--#include virtual="inc/head-static.html" -->
+<script src="config-desktop.js" _print="true"></script>
+</head>
+
+<body>
+<div id="im" class="rong-im">
+<!--#include virtual="templates/im.html" -->
+</div>
+<!--#include virtual="templates/import.html" -->
+<script>
+(function () {
+
+var voice = RongIM.config.voice || {};
+RongIMLib.RongIMVoice.init(voice);
+
+var emoji = RongIM.config.emoji || {};
+RongIMLib.RongIMEmoji.init(emoji);
+
+BQMM.init(RongIM.config.bqmm.appId, RongIM.config.bqmm.appSecret, {
+    decode: function (message) {
+        return message;
+    }
+});
+
+var config = $.extend({}, RongIM.config, {
+    el: '#im'
+});
+
+RongIM.init(config);
+
+})();
+
+// var addon = RongIM.addon;
+// var appVersion = RongIM.addon.getVersion();
+// if(appVersion < '1.0.5'){
+//     var params = {
+//        type: 'warning',
+//        message: '检测到新版本，请更新后使用',
+//        title: '',
+//        detail: ''
+//     };
+//     addon.showMessageBox(params, function(){
+//         window.open('http://web.hitalk.im/download/rce/download.html');
+//     });
+// }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+.rong-setting {
+  width: 540px;
+  height: 390px;
+  overflow: hidden;
+}
+
+.rong-setting-aside {
+  float: left;
+  width: 120px;
+  height: 100%;
+  border-right: 1px solid #ececed;
+  padding-top: 30px;
+}
+.rong-setting-aside li + li {
+  margin-top: 15px;
+}
+.rong-setting-aside a {
+  display: block;
+  padding-left: 16px;
+}
+.rong-setting-aside a:hover {
+  color: #3a91f3;
+}
+
+.rong-setting-selected-account .rong-setting-account {
+  color: #3a91f3;
+  cursor: default;
+}
+
+.rong-setting-selected-password .rong-setting-password {
+  color: #3a91f3;
+  cursor: default;
+}
+
+.rong-setting-selected-system .rong-setting-system {
+  color: #3a91f3;
+  cursor: default;
+}
+
+.rong-setting-main {
+  margin-left: 120px;
+}
+
+.rong-setting-form {
+  padding-top: 35px;
+}
+.rong-setting-form li {
+  position: relative;
+  margin: 0 0 30px 105px;
+  width: 225px;
+}
+.rong-setting-form label {
+  position: absolute;
+  left: -105px;
+  top: 0;
+  width: 105px;
+  padding-left: 35px;
+  line-height: 30px;
+  text-align: left;
+}
+.rong-setting-form .rong-field {
+  display: block;
+  width: 100%;
+}
+.rong-setting-form .rong-button {
+  width: 120px;
+}
+
+.rong-setting-submit {
+  margin-top: 45px;
+  text-align: center;
+}
+.rong-setting-submit .rong-submit {
+  height: 38px;
+}
+
+.rong-system {
+  padding: 25px 30px;
+}
+.rong-system li {
+  position: relative;
+  text-align: right;
+  margin-left: 130px;
+}
+.rong-system li + li {
+  margin-top: 30px;
+}
+
+.rong-system-text {
+  position: absolute;
+  left: -130px;
+  top: 0;
+  text-align: left;
+}
+
+.rong-setting-shortcut li + li {
+  margin-top: 10px;
+}
+
+.rong-system-version {
+  line-height: 25px;
+}
+.rong-system-version em {
+  color: #777;
+}
+.rong-system-version button {
+  width: 80px;
+  height: 25px;
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+.rong-account {
+  padding-top: 60px;
+  text-align: center;
+}
+.rong-account li + li {
+  margin-top: 10px;
+}
+.rong-account .rong-avatar {
+  margin: 0 auto;
+  cursor: default;
+}
+.rong-account .rong-avatar-item {
+  line-height: 60px;
+  font-size: 40px;
+}
+
+.rong-account-logout button {
+  display: inline-block;
+  margin-top: 30px;
+  width: 160px;
+  height: 38px;
+  color: #ff7676;
+}

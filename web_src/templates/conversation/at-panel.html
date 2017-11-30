@@ -1,0 +1,8 @@
+<ul class="rong-at"  v-show="isShow" :style="positionStyle">
+    <li v-for="user in list" :class="{'rong-selected':user.selected}" @click.prevent="clickSelect(user)">
+        <div v-if="isAtAll(user)" class="rong-avatar rong-at-all">@</div>
+        <component v-else is="avatar" :user="user"></component>
+        {{user.name}}
+        <template v-if="user.alias">({{user.alias}})</template>
+    </li>
+</ul>

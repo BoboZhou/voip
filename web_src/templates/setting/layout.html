@@ -1,0 +1,20 @@
+<div class="rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-setting" :class="['rong-setting-selected-' + currentView]">
+        <a @click.prevent="close" href="#close" class="rong-dialog-close" :title="locale.btns.close"></a>
+        <div class="rong-dialog-hd">
+            <h2 class="rong-dialog-title">{{locale.title}}</h2>
+        </div>
+
+        <ul class="rong-setting-aside">
+            <li><a class="rong-setting-account" @click.prevent="setCurrentView('account')" href="">{{locale.account}}</a></li>
+            <li><a class="rong-setting-password"  @click.prevent="setCurrentView('password')" href="">{{locale.password}}</a></li>
+            <li><a class="rong-setting-system" @click.prevent="setCurrentView('system')" href="">{{locale.system}}</a></li>
+        </ul>
+
+        <div class="rong-setting-main">
+            <keep-alive>
+                <component :is="currentView" @close="close"></component>
+            </keep-alive>
+        </div>
+    </div>
+</div>

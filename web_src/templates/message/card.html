@@ -1,0 +1,9 @@
+<div class="rong-conversation-one-message">
+    <div class="rong-profile">
+        <component is="avatar" class="rong-profile-aside" @clickavatar="userProfile(content.userId)" :user="content"></component>
+        <div class="rong-profile-main">
+            <a class="rong-profile-name" @click.prevent="userProfile(content.userId)" href="#user">{{getUsername(content)}}</a>
+        </div>
+    </div>
+    <div class="rong-cardmessage-ft">{{locale.businessCard}}</div>
+</div>

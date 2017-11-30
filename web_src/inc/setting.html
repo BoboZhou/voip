@@ -1,0 +1,11 @@
+<script src="setting.js" _print="true"></script>
+<script>
+(function(){
+	config.product.icon = config.product.icon || "//f2e.cn.ronghub.com/desktop-client-qa/css/images/logo.png";
+	var $fav = document.getElementById('rong-favicon');
+	if (config.product.icon) {
+		$fav.setAttribute('href', config.product.icon);
+	}
+})();
+</script>
+<script src="config.js" _print="true"></script>

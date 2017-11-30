@@ -1,0 +1,612 @@
+$fontfamily: "PingFangSC-Regular", "Microsoft YaHei", sans-serif;
+.rong-voip {
+    font-family: $fontfamily;
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+    button {
+        outline:none;
+        cursor: pointer;
+    }
+    a {
+        text-decoration: none;
+        &:focus{
+            outline:none;
+        }
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: normal;
+        font-size: 100%;
+    }
+    video {
+        height: 100%;
+        width: 100%;
+        background-color: #000;
+    }
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+    button,input,select,textarea{
+        font-family: "PingFangSC-Regular", "Microsoft YaHei", sans-serif;
+        font-size: 100%; 
+    }
+    ::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(0,0,0, 0.5);
+        border-radius: 50px;
+    }
+}
+.rong-icon {
+    background-image: url(images/icon.png);
+    background-repeat: no-repeat;
+    background-size: 100px auto;
+}
+.rong-ringing {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: #002032;
+    overflow: hidden;
+}
+.rong-other-name {
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.rong-callinfo {
+    margin-top: 36px;
+    margin-bottom: 25px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+    line-height: 20px;
+}
+.rong-ringing-buttons {
+    bottom: 10px;
+    text-align: center;
+    .rong-hangup {
+        margin-left: 98px;
+    }
+}
+.rong-accept,.rong-hangup {
+    @extend .rong-icon;
+    border: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+}
+.rong-accept {
+    background-color: #41d936;
+    background-position: -53px -125px;
+}
+.rong-hangup {
+    background-color: #ff5454;
+    background-position: -1px -125px;
+}
+.rong-button {
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #777;
+    text-align: center;
+    &:hover {
+        color: #4899F4;
+    }
+    &[disabled] {
+        color: #777;
+    }
+}
+.rong-submit {
+    color: #4899F4;
+}
+// 单人视频
+.rong-call {
+    width: 100%;
+    height: 100%;
+    background-color: #012032;
+    border-radius: 5px;
+}
+.rong-title {
+    height: 50px;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+}
+.rong-title-protrait {
+    display: inline-block;
+    margin-top: 7px;
+    margin-left: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 3px;
+}
+.rong-title-info {
+    display: inline-block;
+    height: 100%;
+    line-height: 50px;
+}
+
+div.rong-title-left {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.rong-title-full {
+    width: 100%;
+    position: relative;
+    .rong-title-audio {
+        text-align: center;
+    }
+    .rong-title-video {
+        .tong-title-video-box {
+            width: 100%;
+            position: absolute;
+            top: 53%;
+            transform: translateY(-50%);
+            height: 40px;
+            span{
+                height: 20px;
+                line-height: 20px;
+                display: block;
+            }
+        }
+        
+    }
+}
+
+.rong-title-buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.rong-title-icon {
+    @extend .rong-icon;
+    height: 20px;
+    width: 20px;
+    margin-right: 4px;
+    margin-top: 15px;
+    display: inline-block;
+}
+.rong-title-min {
+    @extend .rong-title-icon;
+    background-position: -40px -100px;
+}
+.rong-title-max {
+    @extend .rong-title-icon;
+    background-position: -20px -100px;
+}
+.rong-title-close {
+    @extend .rong-title-icon;
+    background-position: -0px -100px;
+}
+.rong-call-foot {
+    height: 70px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    font-size: 12px;
+    text-align: center;
+    .rong-hangup {
+        position: absolute;
+        margin-top: 12px;
+        right: 20px;
+        top: 0;
+    }
+}
+.rong-waiting {
+    .rong-hangup {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .rong-camera,.rong-camera-close,.rong-microphone,.rong-microphone-close {
+        display: none;
+    }
+}
+.rong-control-button {
+    color: #fff;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 40px;
+}
+.rong-control-button i {
+    @extend .rong-icon;
+    width: 68px;
+    height: 46px;
+    display: block;
+}
+.rong-camera i {
+    background-position: -41px -5px;
+}
+.rong-camera-close i {
+    background-position: 10px -5px;
+}
+.rong-microphone i {
+    background-position: -41px -52px;
+}
+.rong-microphone-close i {
+    background-position: 9px -52px;
+}
+.rong-invitemember {
+    display: none;
+}
+.rong-invitemember i {
+    background-position: 10px -164px;
+}
+.rong-control-btns {
+    text-align: center;
+    padding-right: 40px;
+}
+.rong-call-main-box {
+    position: absolute;
+    top: 50px;
+    bottom: 70px;
+    width: 100%;
+    background-color: #000;
+    text-align: center;
+}
+.rong-call-main {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    .rong-call-main-bg{
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        filter: blur(10px);
+        background-size: cover;
+        background-position: center;
+    }
+}
+.rong-avatar-waiting {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+}
+.rong-avatar-waiting-bd {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-size: 0;
+    i {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 100px;
+        background: rgba(0, 0, 0, 0.6);
+        margin-left: 5px;
+        animation: waiting 1.4s infinite;
+        &:first-child {
+            margin-left: 0;
+            animation-delay: -0.32s;
+        }
+        &:nth-of-type(2) {
+            animation-delay: -0.16s;
+        }
+    }
+}
+@keyframes waiting {
+    0%, 49% {
+        background: rgba(0, 0, 0, 0.6);
+    }
+    50%, 100% {
+        background: #fff;
+    }
+}
+.rong-avatar-img {
+    display: inline-block;
+    height: 70px;
+    width: 70px;
+    margin-bottom: 10px;
+    .rong-call & {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background: no-repeat center center;
+        background-size: contain;
+    }
+}
+.rong-avatar-item {
+    display: inline-block;
+    height: 70px;
+    width: 70px;
+    line-height: 70px;
+    text-align: center;
+    font-size: 35px;
+    color: #fff;
+    cursor: default;
+    margin-bottom: 10px;
+    .rong-call & {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+}
+
+.rong-avatar-theme-0 {
+    background-color: #3a91f3;
+}
+.rong-avatar-theme-1 {
+    background-color: #74cfde;
+}
+.rong-avatar-theme-2 {
+    background-color: #f14e7d;
+}
+.rong-avatar-theme-3 {
+    background-color: #5585a5;
+}
+.rong-avatar-theme-4 {
+    background-color: #f9cb4f;
+}
+.rong-avatar-theme-5 {
+    background-color: #f56b2f;
+}
+.rong-call-other {
+    position: absolute;
+    z-index: 10;
+}
+.rong-user {
+    display: inline-block;
+    position: relative;
+    height: 70px;
+    width: 70px;
+}
+.rong-user-name {
+    display: none;
+    position: absolute;
+    line-height: 1;
+    bottom: 5px;
+    left: 5px;
+    color: #fff;
+    width: 67px;
+    overflow: hidden;
+    white-space:nowrap; 
+    font-size: 12px;
+    text-overflow:ellipsis;
+    .rong-call-main & {
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+.rong-user-busy {
+    text-align: center;
+    position: absolute;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.rong-hiddenvideo>video {
+    position: absolute;
+    top: 999999999px;
+}
+@for $i from 1 through 4 {
+    .rong-audio.rong-multi .rong-call-other-width-#{$i} {
+        width: 160px;
+    }
+}
+@for $i from 5 through 9 {
+    .rong-audio.rong-multi .rong-call-other-width-#{$i} {
+        width: 240px;
+    }
+}
+.rong-audio {
+    .rong-call-main {
+        display: none;
+    }
+    .rong-user+.rong-user {
+        margin-left: 40px;
+    }
+    .rong-call-other {
+        width: 100%;
+        text-align: center;
+    }
+    .rong-camera,.rong-camera-close {
+        display: none;
+    }
+    .rong-microphone,.rong-microphone-close {
+        float: left;
+        left: 20px;
+    }
+}
+.rong-audio.rong-multi {
+    .rong-call-main {
+        display: none;
+    }
+    .rong-waiting .rong-control-btns {
+        width: 150px;
+    }
+    .rong-user {
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+    .rong-call-other {
+        text-align: left;
+    }
+    .rong-camera,.rong-camera-close {
+        display: none;
+    }
+    .rong-control-btns {
+        width: 255px;
+    }
+}
+.rong-audio,.rong-audio.rong-multi {
+    .rong-title-max {
+        display: none;
+    }
+    .rong-call-main-box {
+        background-color: transparent;
+    }
+    .rong-call-other {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+}
+.rong-video {
+    .rong-call-main {
+        display: block;
+        bottom: 0;
+    }
+    .rong-call-other {
+        width: 184px;
+        height: 104px;
+        right: 10px;
+        bottom: 10px;
+        text-align: left;
+    }
+    .rong-user {
+        width: 100%;
+        height: 100%;
+    }
+    .rong-user-bg {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        filter: blur(10px);
+        background-size: cover;
+        background-position: center;
+    }
+}
+.rong-video.rong-multi {
+    .rong-call-main {
+        bottom: 100px;
+    }
+    .rong-call-other {
+        width: 100%;
+        height: 100px;
+        bottom: 0;
+        right: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        &>b::-webkit-scrollbar {
+            height: 5px;
+        }
+        &>b {
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            overflow-x: auto;
+            cursor: pointer;
+            z-index: 1;
+            i {
+                display: block;
+                height: 1px;
+            }
+        }
+    }
+    .rong-user {
+        width: 100px;
+        height: 100px;
+    }
+    .rong-call .rong-avatar-img {
+        width: 100px;
+        height: 100px;
+    }
+    .rong-call .rong-avatar-item {
+        height: 100px;
+        width: 100px;
+        line-height: 100px;
+        font-size: 60px;
+    }
+    .rong-waiting .rong-control-btns {
+        width: 200px;
+    }
+}
+.rong-multi {
+    .rong-user-name {
+        display: block;
+    }
+    .rong-invitemember {
+        display: inline-block;
+    }
+}
+
+// dialog
+.rong-dialog {
+    position: fixed;
+    z-index: 500;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.rong-dialog-inner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border: 1px solid #bebebe;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    background: #fff;
+}
+.rong-dialog-close {
+    position: absolute;
+    z-index: 10;
+    right: 5px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    color: #bebebe;
+    text-align: center;
+    &:hover {
+        color: #000;
+    }
+}
+.rong-dialog-hd {
+    height: 37px;
+    border-bottom: 1px solid #ececed;
+    background: #f2f5f8;
+    border-radius: 8px 8px 0 0;
+}
+.rong-dialog-title {
+    padding-left: 16px;
+    line-height: 36px;
+}
+.rong-messagebox {
+    width: 300px;
+    .rong-dialog-hd {
+        border-bottom: 0;
+        background-color: transparent;
+    }
+}
+.rong-messagebox-bd {
+    padding: 30px 20px 40px 20px;
+    text-align: center;     
+}
+.rong-messagebox-ft {
+    padding-bottom: 30px;
+    text-align: center;
+    .rong-button {
+        margin: 0 10px;
+        width: 115px;
+        height: 38px;
+    }
+}

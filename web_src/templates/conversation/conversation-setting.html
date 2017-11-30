@@ -1,0 +1,35 @@
+<div class="rong-conversation-setting" @click.stop="">
+    <div class="rong-conversation-setting-hd">
+        <h2 class="rong-conversation-setting-title">{{locale.title}}</h2>
+    </div>
+    <div class="rong-conversation-setting-bd">
+        <div class="rong-members">
+            <ul class="rong-clearfix">
+                <li v-if="user">
+                    <a href="" @click.prevent="userProfile(user.id)">
+                        <component is="avatar" :user="user" class="rong-avatar-small"></component>
+                        <div class="rong-members-username">{{getUsername(user)}}</div>
+                    </a>
+                </li>
+                <li>
+                   <a href="" class="rong-conversation-add" :title="locale.btns.add"@click.prevent="addMembers"></a> 
+                </li>
+            </ul>
+        </div>
+        
+        <ul class="rong-conversation-switch">
+            <li class="rong-clearfix">
+                <label class="rong-item-label">{{locale.mute}}</label>
+                <label class="rong-switch">
+                    <input type="checkbox" v-model="isMute"><i></i>
+                </label>
+            </li>
+            <li class="rong-clearfix">
+                <label class="rong-item-label">{{locale.top}}</label>
+                <label class="rong-switch">
+                    <input type="checkbox" v-model="isTop"><i></i>
+                </label>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div v-if="show" class="rong-dialog rong-theme-light">
+    <div class="rong-dialog-inner rong-dialog-friend rong-friend-verify">
+        <a @click.prevent="close" href="#close" class="rong-dialog-close" :title="locale.btns.close"></a>
+        <div class="rong-dialog-hd">
+            <h2 class="rong-dialog-title">{{locale.title}}</h2>
+        </div>
+        
+        <div class="rong-dialog-friend-bd">
+            <input type="text" class="rong-field rong-friend-search" v-model="applyContent" maxlength="100" @keydown="keydown" onclick="this.focus();this.select();">
+            <div class="rong-friend-tip">{{locale.tip}}</div>
+            <div class="rong-dialog-friend-ft">
+                <button class="rong-button" @click.prevent="close">{{locale.btns.cancel}}</button>
+                <button class="rong-button rong-submit" @click.prevent="inviteFriend">{{locale.btns.send}}</button>
+            </div>
+        </div>
+    </div>
+</div>

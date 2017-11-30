@@ -1,0 +1,71 @@
+<div class="rong-dialog" v-if="show">
+    <div class="rong-dialog-inner rong-user rong-pin-dialog">
+        <a @click.prevent="close" href="" class="rong-dialog-close" :title="locale.btns.close"></a>
+
+        <div class="rong-pin-content rong-pin-userlist rong-clearfix">
+            <div class="rong-pin-userlist-tab rong-clearfix">
+                <a class="rong-pin-tab-org" :class="{'rong-pin-tab-selected': isOrgSelected}" href="#org" @click.prevent="selectTab('org')">{{locale.components.newPin.addressList}}</a>
+                <a class="rong-pin-tab-friends" :class="{'rong-pin-tab-selected': isStarSelected}" href="#star" @click.prevent="selectTab('star')">{{locale.components.newPin.contact}}</a>
+                <a class="rong-pin-tab-myfriend" :class="{'rong-pin-tab-selected': isFriendSelected}" href="#org" @click.prevent="selectTab('friend')">{{locale.components.newPin.friend}}</a>
+            </div>
+            <div class="rong-group-tab-bd">
+                    <component v-if="isOrgSelected" is="org" :selected="selected" :defaultSelected="defaultSelected" @added="added" @removed="removed"></component>
+                    <component v-if="isStarSelected" is="star" :selected="selected" :defaultSelected="defaultSelected" @added="added" @removed="removed"></component>
+                    <component v-if="isFriendSelected" is="friend" :selected="selected" :defaultSelected="defaultSelected" @added="added" @removed="removed"></component>
+            </div>
+        </div>
+        <div class="rong-pin-content rong-pin-selected">
+            <h3 class="rong-pin-selected-title">{{getSelectedCount()}}</h3>
+            <div class="rong-pin-selected-border">
+                <ul>
+                    <li v-for="item in selected">{{item.name}}<span @click.prevent="removed([item])">×</span></li>
+                </ul>
+            </div>
+            <h3 class="rong-pin-selected-title rong-pin-selected-content-title">{{locale.components.newPin.content}}</h3>
+            <div  class="rong-pin-selected-border rong-pin-selected-content-border">
+                <textarea v-model="content"></textarea>
+                <a href="" @click.prevent="clickAddAttachment()" class="rong-pin-attach-number" v-if="attachments.length">{{localeFormat(locale.components.newPin.attaCount, attachments.length)}}</a>
+                <a href="" class="rong-pin-add-attachment" @click.prevent="clickAddAttachment()" >
+                    <i class="rong-pin-add-attachment-logo"></i>{{locale.components.newPin.addAtta}}
+                </a>
+                <input id="rongAddAttachment" class="rong-pin-add-attachment rong-pin-add-files" type="file" :name="locale.components.newPin.addAtta" @change="addAttachment($event)" multiple="multiple">
+            </div>
+            
+        </div>
+        <div class="rong-pin-buttons">
+            <div class="rong-pin-send-box">
+                <div class="rong-pin-send-select">
+                    <span>{{locale.components.newPin.sendTime}}</span><button @click.prevent="showSendTime()" class="rong-pin-select-time-box" :class="{'rong-pin-time-selecting': isTimeSelecting, 'rong-pin-sepcific-selecting': isSpecificTimeSelecting}">
+                      {{getSelectedTime()}}
+                    </button>
+                    <ul v-if='isShowTimeSelect' class="rong-pin-select-time">
+                        <li><a href="" @click.prevent="selectImmediately()">{{locale.components.newPin.immediatelySend}}</a></li>
+                        <li><a href="" @click.prevent="selectSpecificTime()">{{locale.components.newPin.specificSend}}</a></li>
+                    </ul>
+                    <div class="rong-pin-select-sepcific-time" v-if="isSpecificTimeSelecting">
+                        <div class="rong-pin-sepcific-time-content" v-for="(item, index) in getDateItems()">
+                            <div class="rong-pin-specific-t" :class="{'rong-pin-specific-year': index==0}">
+                                <a href="" @click.prevent="calcDate(index, 1)">﹢</a>
+                                <p>{{getFormatDate(index)}}</p>
+                                <a href="" @click.prevent="calcDate(index, -1)">﹣</a>
+                            </div>
+                            <p class="rong-pin-specific-mark">{{item}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rong-pin-send-select">
+                    <span>{{locale.components.newPin.sendType}}</span><button @click.prevent="showSendType()" :class="{'rong-pin-time-selecting': isTypeSelecting}" class="rong-pin-select-type-box">{{getSelectedType()}}</button>
+                    <ul v-if='isTypeSelecting' class="rong-pin-select-type">
+                        <li><a href="" @click.prevent="selectSendType(false)">{{locale.components.newPin.app}}</a></li>
+                        <li><a href="" @click.prevent="selectSendType(true)">{{locale.components.newPin.sms}}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="rong-pin-button-box">
+                <button class="rong-pin-button-cancel" @click.prevent="close">{{locale.btns.cancel}}</button>
+                <button @click.prevent="sendPin()" class="rong-pin-button-send" :class="{'rong-pin-button-send-sel': selected.length && content}">{{locale.btns.send}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>

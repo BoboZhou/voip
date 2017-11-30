@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RCE</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+    <!--#include file="inc/head-static.html" -->
+</head>
+<body>
+<div id="voip" class="rong-voip" :class="[{'rong-audio': isAudio},{'rong-video':isVideo},{'rong-multi': !isPrivate}]">
+    <!--#include file="templates/ringing.html" -->
+    <!--#include file="templates/call.html" -->
+    <!--#include file="templates/dialog.html" -->
+    <!--#include file="templates/tip.html" -->
+</div>
+<script>
+    var config = {
+        el: '#voip'
+    };
+    Voip.init(config);
+</script>
+</body>
+</html>

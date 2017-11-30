@@ -1,0 +1,49 @@
+<div class="rong-component">    
+    <component is="search"></component>
+
+    <div class="rong-list-main">
+        <ul class="rong-list-content rong-contact">
+            <li v-if="company && isStaff" :class="{'rong-contact-expand': expand}">
+                <div class="rong-contact-item-hd rong-contact-toggle" @click="toggleList">
+                    <i class="rong-contact-logo"></i>
+                    <em :title="company.name">{{company.name}}</em>
+                </div>
+                <ul class="rong-contact-child">
+                    <li><router-link to="/contact/org/tree">{{locale.contactOrg}}</router-link></li>
+                    <li><router-link :to="'/contact/org/' + myDeptId">{{locale.myDept}}</router-link></li>
+                </ul>
+            </li>
+            <li>
+                <div class="rong-contact-item-hd rong-contact-star">
+                    <em class="rong-selected" v-if="$route.name === 'star'">{{locale.contactStar}}</em>
+                    <router-link v-else to="/contact/star">{{locale.contactStar}}</router-link>
+                </div>
+            </li>
+            <li>
+                <div class="rong-contact-item-hd rong-contact-request" :class="{'rong-contact-new': requestUnReadCount}">
+                    <em class="rong-selected" v-if="$route.path === '/contact/request-friend'">{{locale.newFriend}}</em>
+                    <router-link v-else to="/contact/request-friend">{{locale.newFriend}}</router-link>
+                </div>
+            </li>
+            <li>
+                <div class="rong-contact-item-hd rong-contact-friends">
+                    <em class="rong-selected" v-if="$route.path === '/contact/friends'">{{locale.contactFriend}}</em>
+                    <router-link v-else to="/contact/friends">{{locale.contactFriend}}</router-link>
+                </div>
+            </li>
+            <li>
+                <div class="rong-contact-item-hd rong-contact-group">
+                    <em class="rong-selected" v-if="$route.name === 'group'">{{locale.contactGroup}}</em>
+                    <router-link v-else to="/contact/group">{{locale.contactGroup}}</router-link>
+                </div>
+            </li>
+            <!--
+            <li>
+                <div class="rong-contact-item-hd rong-contact-public">
+                    <a href="">公众号</a>
+                </div>
+            </li>
+            -->
+        </ul>
+    </div>
+</div>

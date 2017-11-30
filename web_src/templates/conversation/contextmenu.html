@@ -1,0 +1,9 @@
+<ul class="rong-menu" :style="{left: context.style.left, top: context.style.top, bottom: context.style.bottom}" @contextmenu.prevent="close">
+   <li v-if="isTop" @click="untop">{{locale.btns.untop}}</li>
+   <li v-else @click="top">{{locale.btns.top}}</li>
+
+   <li v-if="isMute" @click="unmute" class="rong-menu-line">{{locale.btns.unmute}}</li>
+   <li v-else @click="mute" class="rong-menu-line">{{locale.btns.mute}}</li>
+   
+   <li @click="remove">{{locale.btns.removeConversation}}</li>
+</ul>

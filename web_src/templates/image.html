@@ -1,0 +1,22 @@
+<div class="rong-common rong-dialog" v-if="show" @dragover.prevent.stop="" @drop.prevent.stop="">
+    <div class="rong-dialog-inner rong-image">
+        <a @click.prevent="close" href="#close" :title="locale.btns.close" class="rong-dialog-close"></a>
+        <div class="rong-image-bd" @mousewheel.prevent="zoom($event)" @wheel.prevent="zoom($event)">
+            <div class="rong-image-main" @mousedown="dragImg($event)"
+                :style="{'background-image': 'url(' + current.content.imageUri + ')', transform: 'scale(' + scale + ')', margin: margin}"></div>
+        </div>
+        <ul class="rong-image-ft">
+            <li>
+                <a class="rong-image-button rong-image-save" :href="current.content.imageUri" download target="_blank" :title="locale.btns.save"></a>
+            </li>
+            <li class="rong-image-button-full">
+                <button @click="toggle" class="rong-image-button rong-image-fullsize" type="button" :title="locale.btns.full"></button>
+            </li>
+            <li class="rong-image-button-normal">
+                <button @click="toggle" class="rong-image-button rong-image-normal" type="button" :title="locale.btns.normal"></button>
+            </li>
+        </ul>
+        <button v-if="hasPrev" @click="prev" class="rong-image-button rong-image-nav rong-image-prev" type="button" :title="locale.btns.prev"></button>
+        <button v-if="hasNext" @click="next" class="rong-image-button rong-image-nav rong-image-next" type="button" :title="locale.btns.next"></button>
+    </div>
+</div>

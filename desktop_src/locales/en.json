@@ -1,0 +1,95 @@
+{
+	"menus": {
+		"Product": "RCE",
+		"ProductSub": {
+			"About": "About RCE",
+			"Settings": "Account Settings...",
+			"Services": "Services",
+			"CheckUpdate": "Check for update",
+			"HApp": "Hide RCE",
+			"HOthers": "Hide Others",
+			"SAll": "Show All",
+			"Quit": "Quit"
+		},
+		"Edit": "Edit",
+		"EditSub": {
+			"SearchUser": "Search User",
+			"Undo": "Undo",
+			"Redo": "Redo",
+			"Cut": "Cut",
+			"Copy": "Copy",
+			"Paste": "Paste",
+			"SelectAll": "Select All"
+		},
+		"View": "View",
+		"ViewSub": {
+			"Languages": "Languages",
+			"BringFront": "Bring to Front",
+			"Reload": "Reload"
+		},
+		"Window": "Window",
+		"WindowSub": {
+			"Minimize": "Minimize",
+			"Close": "Close",
+			"AllToFront": "Bring All to Front"
+		},
+		"Application": "Application",
+		"ApplicationSub": {
+			"takeScreenshot": "Capture Screen"
+		},
+		"Help": "Help",
+		"HelpSub": {
+			"Search": "Search",
+			"Homepage": "Homepage",
+			"Purgecache": "Purgecache"
+		}
+	},
+	"winTrayMenus": {
+		"Open": "Open",
+		"CheckUpdate": "CheckUpdate",
+		"BringFront": "Bring To Front",
+		"Exit": "Exit"
+	},
+	"main": {
+		"UncaughtException": {
+			"Title": "Something went wrong with your app , we will solve as soon as possible",
+			"Content": "If you use the affected please contact us as soon as possible",
+			"Wetsite": "Wetsite",
+			"Email": "Email",
+			"Website": "main.UncaughtException.Website"
+		}
+	},
+	"autoUpdate": {
+		"onUpdateNotAvailable": {
+			"Message": "No update available",
+			"Title": "No update available",
+			"Detail": "Version s% is the latest version。",
+			"Buttons": {
+				"OK": "OK"
+			}
+		},
+		"onUpdateError": {
+			"Message": "An error occurred while updating。",
+			"Title": "Update failed",
+			"Buttons": {
+				"OK": "OK"
+			}
+		},
+		"onUpdateDownloaded": {
+			"Message": "Find updates s%",
+			"Title": "App update",
+			"Buttons": {
+				"OK": "Setup && Restart",
+				"Cancel": "Cancel"
+			}
+		}
+	},
+	"context": {
+		"Undo": "Undo",
+		"Redo": "Redo",
+		"Cut": "Cut",
+		"Copy": "Copy",
+		"Paste": "Paste",
+		"SelectAll": "SelectAll"
+	}
+}

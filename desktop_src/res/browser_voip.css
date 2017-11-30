@@ -1,0 +1,8 @@
+.rong-titlebar {
+  -webkit-app-region: drag;
+}
+.rong-titlebar a,
+.rong-titlebar input,
+.rong-titlebar button {
+   -webkit-app-region: no-drag;
+}

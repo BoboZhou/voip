@@ -1,0 +1,56 @@
+<div class="rong-component">
+    <div ref="content" class="rong-conversation-content" @mousewheel="scroll($event)" @wheel="scroll($event)" @click="clearUnReadCount">
+        <div v-if="busy" class="rong-loading"><span>{{locale.tips.loading}}</span></div>
+        <div v-for="item in messageList" :id="'rong-message-' + item.messageId">
+            <div v-if="item._showTime" class="rong-conversation-tip rong-disable-select" :data-senttime="item.sentTime">{{item.sentTime | dateFormat}}</div>
+            <div v-if="isGroupNotificationMessage(item)" class="rong-conversation-tip">{{getGroupNotification(item)}}</div>
+            <div v-else-if="item.messageType === 'ContactNotifyMessage'" class="rong-conversation-tip">{{getContactNotification(item)}}</div>
+            <div v-else-if="item.messageType === 'InformationNotificationMessage' " class="rong-conversation-tip">{{getInformationNotificationMessage(item)}}</div>
+            <div v-else-if="item.messageType === 'NotificationMessage' " class="rong-conversation-tip">{{getNotification(item)}}</div>
+            <div v-else-if="item.messageType === 'RecallCommandMessage' " class="rong-conversation-tip">{{getRecallCommand(item)}}</div>
+            <div v-else-if="item.messageType === 'VoIPNotifyMessage' " class="rong-conversation-tip">{{item.content.content}}</div>
+            <div v-else-if="item.messageType === 'UnknowMessage' " class="rong-conversation-tip">{{locale.message.unknown}}</div>
+            <div v-else
+                :data-senttime="item.sentTime"
+                class="rong-conversation-one rong-clearfix"
+                :class="{'rong-conversation-other':item.messageDirection==2,'rong-conversation-me':item.messageDirection==1}">
+                <component is="avatar" :user="item.user" class="rong-message-avatar rong-avatar-small" @clickavatar="userProfile(item.user.id)"></component>
+                <div v-if="item.messageDirection == 2" class="rong-conversation-one-username">
+                    <a @click.prevent="userProfile(item.user.id)" href="">{{getUsername(item.user)}}</a>
+                </div>
+                
+                <div class="rong-message" :class="['rong-' + getMessageType(item).toLowerCase()]">
+                    <div class="rong-message-bd" @contextmenu.prevent="showContextmenu($event, {message: item}, fixOffset)">
+                        <component :is="getMessageType(item)" :message="item" :message-list="messageList" @uploadCancel="uploadCancel"></component>
+                    </div>
+                    <i v-if="fromMe(item)" class="rong-message-status" :class="['rong-message-' + getMessageStatus(item)]" :disabled="disabled" @click="reSendMessage(item)"></i>
+                    <div v-if="showPrivateResp(item)" class="rong-ack rong-disable-select">
+                        <a v-if="isUnRead(item)" @click.prevent="">{{locale.message.unread}}</a>
+                        <span v-if="isRead(item)">{{locale.message.read}}</span>
+                    </div>
+                    <div v-if="showGroupResp(item)" class="rong-ack rong-disable-select">
+                        <a href="#" v-if="ableSendGroupReq(item)" @click.prevent="sendGroupReq(item)">{{locale.message.checkUnread}}</a>
+                        <template v-if="hasGroupResp(item)">
+                            <a href="#" v-if="getUnreadCount(item) > 0" @click.prevent="showUnreadMember(item)">{{localeFormat(locale.message.unreadMember, getUnreadCount(item))}}</a>
+                            <span v-else-if="getUnreadCount(item) === 0">{{locale.message.allRead}}</span>
+                            <span v-else>{{locale.tips.loading}}</span>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rong-message-bottom" class="rong-message-bottom"></div>
+    </div>
+
+    <div v-if="hasNewMessageTip" class="rong-new-message">
+        <a href="#bottom" @click.prevent="scrollToNewMessage(conversation.unreadMessageCount)">{{localeFormat(locale.message.unreadMessageCount, conversation.unreadMessageCount)}}</a>
+    </div>
+
+    <component is="contextmenu" v-if="context"
+        @close="closeContextmenu"
+        @recall="recall"
+        @copy="copy"
+        @forward="forward"
+        @remove="remove"
+        :context="context"></component>
+</div>
