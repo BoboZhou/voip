@@ -26,7 +26,9 @@ var BlinkConstant = {
 	/** reconnect最大连续次数 */
 	RECONNECT_MAXTIMES : 10,
 	/** reconnect连续重连时间间隔 */
-	RECONNECT_TIMEOUT : 1 * 1000
+	RECONNECT_TIMEOUT : 1 * 1000,
+	/** getStatsReport时间间隔 */
+	GETSTATSREPORT_INTERVAL : 1 * 1000
 }
 /** 连接类型 */
 BlinkConstant.ConnectionType = {
@@ -219,6 +221,13 @@ BlinkEngine.prototype.init = function(wsNavUrl) {
 //	this.mediaConfig.sdpConstraints.mandatory = {};
 //	this.mediaConfig.sdpConstraints.mandatory.OfferToReceiveAudio = true;
 //	this.mediaConfig.sdpConstraints.mandatory.OfferToReceiveVideo = true;
+
+	/** 是否上报丢包率信息 */
+	this.isSendLostReport = false;
+	/** BlinkConnectionStatsReport */
+	this.blinkConnectionStatsReport = null;
+	/** getStatsReport间隔 */
+	this.getStatsReportInterval = null;
 };
 /**
  * reset
@@ -331,16 +340,32 @@ BlinkEngine.prototype.leaveChannel = function() {
 }
 /**
  * 获取本地视频视图
+ * @Deprecated
  * 
  */
 BlinkEngine.prototype.getLocalVideoView = function() {
-	return this.localStream;
+	return this.getLocalStream();
 };
 /**
  * 获取远端视频视图
+ * @Deprecated
  * 
  */
 BlinkEngine.prototype.getRemoteVideoView = function(userId) {
+	return this.getRemoteStream(userId);
+};
+/**
+ * 获取本地视频流
+ * 
+ */
+BlinkEngine.prototype.getLocalStream = function() {
+	return this.localStream;
+};
+/**
+ * 获取远端视频流
+ * 
+ */
+BlinkEngine.prototype.getRemoteStream = function(userId) {
 	for ( var i in this.remoteStreams) {
 		if (this.remoteStreams[i].id == userId) {
 			return this.remoteStreams[i]
@@ -355,6 +380,46 @@ BlinkEngine.prototype.getRemoteVideoView = function(userId) {
  */
 BlinkEngine.prototype.getRemoteStreamCount = function() {
 	return this.remoteStreams.length;
+};
+/**
+ * 创建视频视图
+ * 
+ */
+BlinkEngine.prototype.createVideoView = function() {
+	var videoView = document.createElement('video');
+	// 视频自动播放
+	videoView.autoplay = true;
+	return videoView;
+};
+/**
+ * 创建本地视频视图
+ * 
+ */
+BlinkEngine.prototype.createLocalVideoView = function() {
+	var localVideoView = this.createVideoView();
+	// 本地视频静音
+	localVideoView.muted = true;
+	// ID
+	localVideoView.id = this.selfUserId;
+	// 附加视频流
+	localVideoView.srcObject = this.getLocalStream();
+	return localVideoView;
+};
+/**
+ * 创建远端视频视图
+ * 
+ */
+BlinkEngine.prototype.createRemoteVideoView = function(userId) {
+	var remoteStream = this.getRemoteStream(userId);
+	if (remoteStream == null) {
+		return null;
+	}
+	var remoteVideoView = this.createVideoView();
+	// ID
+	remoteVideoView.id = userId;
+	// 附加视频流
+	remoteVideoView.srcObject = remoteStream;
+	return remoteVideoView;
 };
 /**
  * 关闭/打开麦克风 true, 关闭 false, 打开
@@ -456,6 +521,13 @@ BlinkEngine.prototype.requestWhiteBoardURL = function() {
  */
 BlinkEngine.prototype.queryWhiteBoard = function() {
 	this.ewb_query();
+}
+/**
+ * 设置是否上报丢包率信息
+ * 
+ */
+BlinkEngine.prototype.enableSendLostReport = function(enable) {
+	this.isSendLostReport = enable
 }
 /** ----- 提供能力 ----- */
 /** ----- websocket ----- */
@@ -802,6 +874,56 @@ BlinkEngine.prototype.keepAliveDisconnect = function() {
 	});
 }
 /** ----- keepAlive ---- */
+/** ----- getStatsReport ---- */
+/**
+ * getStatsReport
+ * 
+ */
+BlinkEngine.prototype.getStatsReport = function() {
+	var pcClient = this.peerConnections[this.selfUserId];
+	if (pcClient != null) {
+		var pc = pcClient['pc'];
+		var blinkEngine = this;
+		pc.getStats(null, function(report) {
+			blinkEngine.blinkConnectionStatsReport.parseStatsReport(report);
+			if (blinkEngine.isSendLostReport) {
+				BlinkLogger.info("onNetworkSentLost=" + 
+						blinkEngine.blinkConnectionStatsReport.packetSendLossRate);
+				// 上报丢包率信息，返回本地数据流的丢包率
+				blinkEngine.blinkEngineEventHandle.call('onNetworkSentLost', {
+					packetSendLossRate : blinkEngine.blinkConnectionStatsReport.packetSendLossRate
+				});
+			}
+		}, function(error) {
+			BlinkLogger.error("getStatsReport error: ", error);
+		});
+	}
+}
+/**
+ * 开始getStatsReport
+ * 
+ */
+BlinkEngine.prototype.startScheduleGetStatsReport = function() {
+	this.exitScheduleGetStatsReport();
+
+	this.blinkConnectionStatsReport = new BlinkConnectionStatsReport();
+	var blinkEngine = this;
+	blinkEngine.getStatsReportInterval = setInterval(function() {
+		blinkEngine.getStatsReport();
+	}, BlinkConstant.GETSTATSREPORT_INTERVAL);
+}
+/**
+ * 停止getStatsReport
+ * 
+ */
+BlinkEngine.prototype.exitScheduleGetStatsReport = function() {
+	if (this.getStatsReportInterval != null) {
+		clearInterval(this.getStatsReportInterval);
+		this.getStatsReportInterval = null;
+	}
+	this.blinkConnectionStatsReport = null;
+}
+/** ----- getStatsReport ---- */
 /** ----- 请求信令 ----- */
 // /**
 // * 请求logon信令
@@ -1080,7 +1202,10 @@ BlinkEngine.prototype.left = function(data) {
 	}
 	this.joinedUsers.remove(userId);
 	this.remoteCnameMap.remove(userId);
-	if (this.joinedUsers.size() == 1) { // 当没有其它用户在会议时，关闭连接
+	if (this.joinedUsers.size() == 1) { // 当没有其它用户在会议时
+		// 重置offerStatus状态
+		this.offerStatus = null;
+		// 关闭连接
 		this.closePeerConnection(this.selfUserId);
 	}
 	this.blinkEngineEventHandle.call('onUserLeft', {
@@ -1157,6 +1282,9 @@ BlinkEngine.prototype.preparePeerConnection = function(userId) {
 		blinkEngine.peerConnections[userId] = {}
 		blinkEngine.peerConnections[userId]['pc'] = pc;
 		blinkEngine.peerConnections[userId]['rem'] = false;
+		
+		// peerConnection创建成功，开始getStatsReport
+		blinkEngine.startScheduleGetStatsReport();
 	}
 	return blinkEngine.peerConnections[userId];
 };
@@ -1169,6 +1297,8 @@ BlinkEngine.prototype.closePeerConnection = function(userId) {
 		this.peerConnections[userId]['pc'].close();
 		this.peerConnections[userId] = null;
 	}
+	// peerConnection关闭，停止getStatsReport
+	this.exitScheduleGetStatsReport();
 }
 /**
  * 处理OfferRequest通知信令
@@ -1410,6 +1540,78 @@ BlinkEngineEventHandle.prototype.call = function(eventName, data) {
 // return BlinkEngineEventHandle;
 // });
 /** ----- BlinkEngineEventHandle ----- */
+
+/** ----- BlinkConnectionStatsReport ----- */
+var BlinkConnectionStatsReport = function() {
+	this.statsReportSend = {};
+	this.statsReportRecvs = new Array();
+	this.packetSendLossRate = 0;
+}
+/**
+ * parse statsReport
+ * 
+ */
+BlinkConnectionStatsReport.prototype.parseStatsReport = function(report) {
+	var packetsSent = this.statsReportSend.packetsSent;
+	packetsSent = (packetsSent == null || packetsSent == "") ? 0 : packetsSent;
+	var packetsLost = this.statsReportSend.packetsLost;
+	packetsLost = (packetsLost == null || packetsLost == "") ? 0 : packetsLost;
+	var packetSendLossRate = 0;
+
+	var statsReportSend = {};
+	var statsReportRecvs = new Array();
+	for ( var i in report) {
+		var now = report[i];
+		if (now.type == 'ssrc' && now.mediaType == 'video') {
+			if (now.id.indexOf("recv") != -1) {
+				var statsReportRecv = {};
+				statsReportRecv.googTrackId = now.googTrackId;
+				statsReportRecv.googCodecName = now.googCodecName
+				statsReportRecv.googCurrentDelayMs = now.googCurrentDelayMs;
+				statsReportRecv.googDecodeMs = now.googDecodeMs;
+				statsReportRecv.googFrameHeightReceived = now.googFrameHeightReceived;
+				statsReportRecv.googFrameRateDecoded = now.googFrameRateDecoded;
+				statsReportRecv.googFrameRateOutput = now.googFrameRateOutput;
+				statsReportRecv.googFrameRateReceived = now.googFrameRateReceived;
+				statsReportRecv.googFrameWidthReceived = now.googFrameWidthReceived;
+				statsReportRecv.packetsLost = now.packetsLost;
+				statsReportRecv.packetsReceived = now.packetsReceived;
+
+				statsReportRecvs.push(statsReportRecv);
+			} else if (now.id.indexOf("send") != -1) {
+				statsReportSend.googCodecName = now.googCodecName;
+				statsReportSend.googAvgEncodeMs = now.googAvgEncodeMs;
+				statsReportSend.googFrameHeightInput = now.googFrameHeightInput;
+				statsReportSend.googFrameHeightSent = now.googFrameHeightSent;
+				statsReportSend.googFrameRateSent = now.googFrameRateSent;
+				statsReportSend.googFrameWidthInput = now.googFrameWidthInput;
+				statsReportSend.googFrameWidthSent = now.googFrameWidthSent;
+				statsReportSend.googFrameRateInput = now.googFrameRateInput;
+				statsReportSend.packetsLost = now.packetsLost;
+				statsReportSend.packetsSent = now.packetsSent;
+
+				if (statsReportSend.packetsLost != null
+						&& statsReportSend.packetsLost != ""
+						&& statsReportSend.packetsSent != null
+						&& statsReportSend.packetsSent != ""
+						&& (statsReportSend.packetsSent - packetsSent != 0)) {
+					packetSendLossRate = (statsReportSend.packetsLost - packetsLost)
+							* 100 / (statsReportSend.packetsSent - packetsSent);
+				}
+			}
+		}
+	}
+	// 重置
+	this.statsReportSend = null;
+	this.statsReportRecvs = null;
+	this.packetSendLossRate = 0;
+	this.statsReportSend = statsReportSend;
+	this.statsReportRecvs = statsReportRecvs;
+	BlinkLogger.debug("packetSendLossRate=" + packetSendLossRate);
+	this.packetSendLossRate = parseInt(packetSendLossRate);
+	BlinkLogger.debug("this.packetSendLossRate=" + this.packetSendLossRate);
+}
+/** ----- BlinkConnectionStatsReport ----- */
 
 /** ----- BlinkVideoView ----- */
 var BlinkVideoView = function() {

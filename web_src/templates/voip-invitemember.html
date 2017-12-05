@@ -15,7 +15,7 @@
                 </div>
 
                 <div v-if="filterList.length > 0" class="rong-group-check">
-                    <label class="rong-checkbox"><input type="checkbox" v-model="checkedAll" :indeterminate="indeterminate"><i></i> <span>全选</span></label>
+                    <label class="rong-checkbox"><input type="checkbox" v-model="checkedAll" :indeterminate="indeterminate"><i></i> <span>{{locale.btns.checkedAll}}</span></label>
                 </div>
 
                 <ul class="rong-group-userlist-bd">
@@ -29,7 +29,7 @@
                 </ul>
             </div>
             <div class="rong-group-selected">
-                <h3 v-if="selected.length" class="rong-group-selected-hd">已选择成员（{{selected.length}}）</h3>
+                <h3 v-if="selected.length" class="rong-group-selected-hd">已选择成员({{selected.length}})</h3>
                 <h3 v-else class="rong-group-selected-hd">请选择需要邀请的成员</h3>
 
                 <ul class="rong-group-selected-bd">

@@ -365,7 +365,9 @@ RongIM.locale.zh = {
             "emoji": "表情",
             "screenshot": "截图",
             "sendFile": "传送文件",
-            "sendCard": "发送名片"
+            "sendCard": "发送名片",
+            "sendVideo": "视频聊天",
+            "sendAudio": "语音聊天"
         },
         "previewImage": {
             "title": "发送图片"

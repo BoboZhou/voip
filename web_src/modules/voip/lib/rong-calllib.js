@@ -329,8 +329,10 @@
 
     var getToken = function(params, callback) {
         var channelId = params.channelId;
+        var engineType = params.engineType;
         params = {
             command: 'getToken',
+            engineType: engineType,
             data: {
                 channelId: channelId
             }
@@ -1125,8 +1127,8 @@
         var conversationType = params.conversationType;
         if (params.passive) {
             key = cache.get('hungupReason') || key;
-            if (isGroup(conversationType)) {
-                if (callTimer[config.currentUserId].status == CallStatus.Active) {
+            if (isGroup(conversationType)) {  // TODO callTimer[config.currentUserId] ==undefinde  导致多人无法挂断 看看融云什么问题
+                if (callTimer[config.currentUserId] && callTimer[config.currentUserId].status == CallStatus.Active) {
                     key = 'REMOTE_HANGUP13';
                 } else {
                     key = 'NO_RESPONSE5';

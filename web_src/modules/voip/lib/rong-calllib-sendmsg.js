@@ -140,14 +140,14 @@
             sendMessage(params, callback);
         },
         getToken: function(params, callback){
-            var engineType = params.engineType || 2;
+            var engineType = params.engineType || 3;//TODO rong is 2
 
             var get = function(engineType){
                 var channelId = params.channelId;
                 im.getAgoraDynamicKey(engineType, channelId, {
                     onSuccess: function(data) {
                         var error = null;
-                        callback(error, data.dynamicKey);
+                        callback(error, data);
                     },
                     onError: function(error) {
                         callback(error);

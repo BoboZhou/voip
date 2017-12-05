@@ -14,10 +14,10 @@
             <i class="rong-toolbar-card" :title="locale.sendCard" @click="sendCard"></i>
         </div>
         <div class="rong-toolbar-item" v-if="support.voip">
-            <i class="rong-toolbar-video" title="视频聊天" @click="sendVideo()"></i>
+            <i class="rong-toolbar-video" :title=locale.sendVideo @click="sendVideo()"></i>
         </div>
         <div class="rong-toolbar-item" v-if="support.voip">
-            <i class="rong-toolbar-audio" title="语音聊天" @click="sendAudio()"></i>
+            <i class="rong-toolbar-audio" :title="locale.sendAudio" @click="sendAudio()"></i>
         </div>
     </div>
     <div class="rong-conversation-field">
