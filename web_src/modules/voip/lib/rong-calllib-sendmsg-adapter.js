@@ -50,7 +50,7 @@ var MessageCtrl = {
         });
     },
     unwatch: function () {
-        unregListener('onIMRequest');
+        unRegListener('onIMRequest');
     }
 };
 
