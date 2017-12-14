@@ -91,7 +91,7 @@ var ring = {
 };
 
 var videoEleCache = {};
-
+    window.rongVideo = videoEleCache;
 function init(config) {
     $.extend(Voip.config, config);
 
@@ -490,7 +490,11 @@ function getUser(list, userId) {
 function removeUser(list, userId) {
     list.forEach(function (item, index) {
         if (item.id === userId) {
+            console.log("removeUser ", userId);
+            let b = delete videoEleCache[String(userId)]; //v-video
             list.splice(index, 1);
+            console.log(" delete videoEleCache[String(userId)]", b);
+
             return false;
         }
     });
@@ -617,8 +621,11 @@ var videoItem = {
         }
         videoEleCache[id] = ele;
     },
-    removed: function () {
+    removed: function (ele, context) {
         // arguments: ele, context
+        console.log(ele,context);
+        var removeItem=document.getElementById(ele);
+        removeItem.parentNode.removeChild(removeItem);
     }
 };
 

@@ -43,7 +43,8 @@ function init(config) {
                 messageCache: [],
                 busy: false,
                 sharing: false,
-                type: 0
+                type: 0,
+                callId:''//群聊的保持一个唯一非callId 防止一个群的其他群聊消息的干扰
             },
             loginUser: null,
             requestUnReadCount: 0,
@@ -447,10 +448,11 @@ var voipMessageHandler = {
 function openCallback(req, context) {
     RongIM.voip.IMRequest(req);
 
-    context.voip.loading = false;
+    context.voip.loading = true;
     context.voip.busy = true;
     context.voip.sharing = req.data.content.sharing;
     context.voip.type = req.data.content.mediaType;
+    context.voip.callId = req.data.content.callId;
     context.voip.messageCache.forEach(function (item) {
         RongIM.voip.IMRequest(item);
     });
@@ -469,7 +471,7 @@ function initVoip(context, messageApi, userApi) {
             type: 'message',
             data: message
         };
-        if (context.voip.loading) {
+        if (context.voip.loading && message.content.callId != context.voip.callId) {
             context.voip.messageCache.push(req);
             return ;
         }
@@ -479,6 +481,8 @@ function initVoip(context, messageApi, userApi) {
 
     RongIM.voip.regClose(function () {
         context.voip.busy = false;
+        context.voip.loading = false;
+        context.voip.callId = '';
     });
 }
 

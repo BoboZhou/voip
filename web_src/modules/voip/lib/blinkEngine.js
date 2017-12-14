@@ -956,7 +956,8 @@ BlinkEngine.prototype.logonAndJoin = function(status) {
 		'type' : this.userType,
 		'index' : this.localVideoEnable ? 1 : 0,
 		'status' : this.logonAndJoinStatus,
-		'version' : BlinkConstant.LOGON_VERSION
+		'version' : BlinkConstant.LOGON_VERSION,
+        'mediaid': this.selfUserId
 	});
 }
 /**
@@ -1079,7 +1080,8 @@ BlinkEngine.prototype.logonAndJoin_result = function(data) {
 			|| (this.logonAndJoinStatus == BlinkConstant.LogonAndJoinStatus.RECONNECT && !isJoined) // 重连加入且加入失败
 	) {
 		this.blinkEngineEventHandle.call('onJoinComplete', {
-			'isJoined' : isJoined
+			'isJoined' : isJoined,
+            'userId':this.selfUserId
 		});
 	}
 }

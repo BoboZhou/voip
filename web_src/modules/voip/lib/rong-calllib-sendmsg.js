@@ -48,6 +48,7 @@
         var pushText = params.pushText || '';
         var appData = params.appData || '';
         var methodType = null;
+        console.log(" im.sendMessage", msg);
         im.sendMessage(conversationType, targetId, msg, {
             onSuccess: function(message) {
                 var error = null;

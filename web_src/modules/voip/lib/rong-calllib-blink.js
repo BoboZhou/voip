@@ -41,9 +41,9 @@
     var selfUserId;
     var joinRoom = function(params, callback) {
         callback = callback || util.noop;
-        selfUserId=params.userId;
         var url = params.url || '';
         videoRoom = new BlinkEngine(url);
+        window.blink = videoRoom;
         var roomHandler = new BlinkEngineEventHandle();
 
         var errorInfo = null;
@@ -84,10 +84,11 @@
         };
         var eventFactory = {
             onJoinComplete: function(data) {
+                console.log("onJoinComplete",data)
                 var joinedItem = {
                     success: function() {
                         var localStream = videoRoom.getLocalVideoView();
-                         userId = data.userId||selfUserId;
+                         userId = data.userId
 
                         participant.add({
                             userId: userId,
@@ -105,6 +106,7 @@
                 joinedItem[method]();
             },
             onLeaveComplete: function(data) {
+                console.log("onLeaveComplete",data)
                 var leftItem = {
                     success: function() {
                         participant.leave();
@@ -119,6 +121,7 @@
                 leftItem[method]();
             },
             onUserJoined: function(data) {
+                console.log("onUserJoined",data)
                 var userId = data.userId;
                 console.info("userID",userId)
                 var stream = videoRoom.getRemoteVideoView(userId);
@@ -130,6 +133,7 @@
 
             },
             onUserLeft: function(data) {
+                console.log("onUserLeft",data)
                 var userId = getId(data.userId);
 
                 participant.remove({
@@ -177,7 +181,9 @@
         });
 
         var token = params.token;
-        console.info("userid,token",userId,token)
+        var userId = params.sentTime & 0x7fffffff;
+        selfUserId = userId;
+        console.log("userid,token",userId,token)
         videoRoom.joinChannel(roomId, userId, token);
     };
 

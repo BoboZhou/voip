@@ -81,7 +81,8 @@
     cache.set('videoQueue', {});
 
     var callTimer = {};
-
+    window.callTimer = callTimer
+    window.Timer = callTimer;
     var calcTimeout = function(params) {
         var userIds = params.userIds;
         var conversationType = params.conversationType;
@@ -329,7 +330,7 @@
 
     var getToken = function(params, callback) {
         var channelId = params.channelId;
-        var engineType = params.engineType;
+        var engineType = 3;
         params = {
             command: 'getToken',
             engineType: engineType,
@@ -356,7 +357,7 @@
         busy: function(message) {
             var reasonKey = 'BUSYLINE4';
             var reason = Reason.get(reasonKey);
-            
+
             var isSender = (message.messageDirection ==1 );
 
             if (isSender) {
@@ -385,17 +386,23 @@
 
             sendCommand(params);
         },
-        free: function(message) {
+        free: function(message,isNeedUpUserRel,isInvite) {
             commandWatcher.notify(message);
 
             cache.set('session', message);
 
             var sentTime = message.sentTime;
             var senderUserId = message.senderUserId;
-            addUserRelation({
-                sentTime: sentTime,
-                senderUserId: senderUserId
-            });
+            if (isNeedUpUserRel) {
+                addUserRelation({
+                    sentTime: sentTime,
+                    senderUserId: senderUserId
+                });
+            }else {
+                message.content.existedUserPofiles.map((user) =>{
+                    doUserRelation(user.userId, user.mediaId);
+                })
+            }
 
             var content = message.content;
 
@@ -407,6 +414,14 @@
             var userIds = content.inviteUserIds;
 
             cache.set('inviteUsers', array2Obj(userIds));
+            if (message.content.existedUserPofiles) {
+                let existUsers = message.content.existedUserPofiles.map((user) => {
+                    return user.userId
+                })
+               existUsers.forEach((id)=>{
+                   userIds.push(id);
+               })
+            }
 
             var mediaType = content.mediaType;
             var params = {
@@ -417,6 +432,17 @@
                 status: CallStatus.Incoming
             };
             calcTimeout(params);
+            // 移动端第一次向pc端发起单个群聊 导致existuser 里面缺少发起端
+            if (isInvite) {
+                var params = {
+                    conversationType: conversationType,
+                    targetId: targetId,
+                    userIds: [message.senderUserId],
+                    mediaType: mediaType,
+                    status: CallStatus.Active
+                };
+                calcTimeout(params);
+            }
 
             var data = {
                 conversationType: conversationType,
@@ -434,19 +460,26 @@
         }
     };
 
-    var addUserRelation = function(params) {
-        var sentTime = params.sentTime;
-        var senderUserId = params.senderUserId;
+    function doUserRelation(senderUserId, userId) {
         var session = cache.get('session');
-        var userId = sentTime & 0x7fffffff;
 
-        session[senderUserId] = senderUserId;
-        session[userId] = senderUserId;
+            session[senderUserId] = userId;
+            session[userId] = senderUserId;
 
         return {
             userId: userId,
             sender: senderUserId
         };
+    }
+
+    var addUserRelation = function(params) {
+        var sentTime = params.sentTime;
+        var senderUserId = params.senderUserId;
+        var mediaID = sentTime & 0x7fffffff;
+
+
+        console.log("addUserRelation:sentTime->userId", sentTime, "->", senderUserId);
+        return doUserRelation(senderUserId, mediaID);
     };
     var Consumer = function(result) {
         var queue = cache.get('videoQueue');
@@ -474,18 +507,24 @@
     var stopItem = {
         single: function(message) {
             var senderUserId = message.senderUserId;
+            let targetId = message.targetId;
             var timer = callTimer[senderUserId];
+            timer.status=message.callInfo.status;
+            var timerTarget = callTimer[targetId];
+            timerTarget.status=message.callInfo.status;
             timer && timer.stop();
+            timerTarget && timerTarget.stop();
         },
-        multi: function() {
+        multi: function(message) {
             util.forEach(callTimer, function(timer) {
+                timer.status=message.callInfo.status;
                 timer.stop();
             });
-            cache.remove('inviteUsers');
+            // cache.remove('inviteUsers');
         }
     };
     var stopTimer = function(message) {
-        var method = message ? 'single' : 'multi';
+        var method = message.extra || 'multi';
         stopItem[method](message);
     };
 
@@ -552,7 +591,7 @@
         InviteMessage: function(message) {
             var session = cache.get('session');
             var method = session ? 'busy' : 'free';
-            inviteItem[method](message);
+            inviteItem[method](message,true,true);
         },
         RingingMessage: function(message) {
             var senderUserId = message.senderUserId;
@@ -653,7 +692,7 @@
             stopTimer(message);
 
             delete inviteUsers[senderUserId];
-
+            delete callTimer[senderUserId];// 挂断在邀请
             var isReceived = (message.messageDirection == MessgeDirection.RECEIVED);
 
             if (isReceived) {
@@ -682,7 +721,7 @@
             commandWatcher.notify(message);
         },
         MemberModifyMessage: function(message) {
-            inviteItem['free'](message);
+            inviteItem['free'](message,false,false);
         },
         otherMessage: function(message) {
             commandWatcher.notify(message);
@@ -780,7 +819,7 @@
             return;
         }
 
-        var engineType = params.engineType || 2;
+        var engineType = 3;
 
         cache.set(callback, params);
 
@@ -838,16 +877,16 @@
         };
         var conversationType = data.conversationType;
         var targetId = data.targetId;
-        var mediaType = data.meidaType;
-
+        var mediaType = data.content.mediaType;
+        console.log("send memberModify", data);
         sendCommand(params, function(error, result) {
             var sentTime = result.sentTime;
             var senderUserId = result.senderUserId;
 
-            addUserRelation({
+          /*  addUserRelation({  //  群聊 A 已经在房间， A 邀请 B ，A的mediaId在第一次accept的时候已经确定！此 sentTime 是A 邀请 B的时间戳 不应该映射为 A 的mediaID。
                 sentTime: sentTime,
                 senderUserId: senderUserId
-            });
+            });*/
 
             var error = {
                 code: error
@@ -888,7 +927,7 @@
         var callId = content.callId;
 
         var caller = session.senderUserId;
-        var engineType = params.engineType || 2;
+        var engineType = 3;
         var channel = {
             Key: '',
             Id: callId
@@ -906,7 +945,7 @@
         util.forEach(callTimer, function(timer, userId) {
             var member = {
                 userId: userId,
-                mediaId: '',
+                mediaId: String(session[userId] & 0x7fffffff),//ios o只支持string 类型
                 mediaType: timer.mediaType,
                 callStatus: timer.status
             };
@@ -916,13 +955,25 @@
         var currentUserId = config.currentUserId;
         var currentUser = {
             userId: currentUserId,
-            mediaId: '',
+            mediaId: String(session[currentUserId] & 0x7fffffff),
             mediaType: mediaType,
             callStatus: CallStatus.Active
         };
-
-        existList.push(currentUser);
-
+       let userIDs= existList.map((user)=>{
+            return user.userId
+        })
+        if (userIDs.indexOf(currentUser.userId)<0)
+            existList.push(currentUser);
+     /*   // 去重
+       existList= existList.filter((user)=>{
+            var t = false;
+            existList.forEach((u)=>{
+                if (user.userId == u.userId) {
+                    !t
+                }
+            })
+             return t;
+        })*/
         var data = {
             conversationType: conversationType,
             targetId: targetId,
@@ -931,6 +982,9 @@
                 callId: callId,
                 caller: caller,
                 engineType: engineType,
+                extra:"multi",
+                inviter:currentUser.userId,
+                useSignalServer:false,
                 channelInfo: channel,
                 mediaType: mediaType,
                 inviteUserIds: inviteUserIds,
@@ -969,7 +1023,7 @@
             info: info
         });
 
-        var engineType = params.engineType;
+        var engineType = 3;
 
         var content = session.content;
         var callId = content.callId;
@@ -995,6 +1049,9 @@
                 mediaType: content.mediaType,
                 status: CallStatus.Active
             };
+            if (session.content.extra){
+                command.extra = session.content.extra;
+            }
 
             stopTimer(command);
 
