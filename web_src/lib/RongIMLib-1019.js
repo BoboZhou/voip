@@ -6973,8 +6973,8 @@ var RongIMLib;
             this.inviteUserIds = message.inviteUserIds;
             this.existedMemberStatusList = message.existedMemberStatusList;
             this.existedUserPofiles = message.existedMemberStatusList;
-            this.useSignalServer=message.useSignalServer;
-            this.inviter = message.inviter;
+            // this.useSignalServer=message.useSignalServer;
+            // this.inviter = message.inviter;
         }
         MemberModifyMessage.prototype.encode = function () {
             return JSON.stringify(RongIMLib.ModelUtil.modelClone(this));

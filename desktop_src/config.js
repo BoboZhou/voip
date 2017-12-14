@@ -3,7 +3,7 @@ var im_config = {
     //http://electron.atom.io/docs/api/crash-reporter/
     REPORT_URL: 'http://report.sealtalk.im',
     //测试环境   
-    APP_HOST: 'http:localhost:8090/',
+    APP_HOST: 'https://10.13.10.124:8090/',
     APP_INDEX: 'desktop.html',
     //############  以上为必改项  ##############
     APP_ID: 'appId',
