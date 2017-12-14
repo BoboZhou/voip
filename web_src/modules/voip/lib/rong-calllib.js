@@ -393,12 +393,12 @@
 
             var sentTime = message.sentTime;
             var senderUserId = message.senderUserId;
-            if (isNeedUpUserRel) {
+            if (isNeedUpUserRel) { //邀请方一人映射
                 addUserRelation({
                     sentTime: sentTime,
                     senderUserId: senderUserId
                 });
-            }else {
+            }else { // 群聊 映射 正在视频的成员
                 message.content.existedUserPofiles.map((user) =>{
                     doUserRelation(user.userId, user.mediaId);
                 })
